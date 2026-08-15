@@ -48,7 +48,7 @@ export default function useColumnHover(): ColumnHoverState {
     if (index === 5) { // ABOUT column
       updateRandomHudTexts();
       if (intervalRef.current) clearInterval(intervalRef.current);
-      intervalRef.current = setInterval(updateRandomHudTexts, 50);
+      intervalRef.current = setInterval(updateRandomHudTexts, 220);
     } else if (index === 1) { // EXPERIENCE column
       branchUpdateCounterRef.current = 0;
       if (branchIntervalRef.current) clearInterval(branchIntervalRef.current);
@@ -86,7 +86,7 @@ export default function useColumnHover(): ColumnHoverState {
         setBranchText2(generateRandomChars(length2));
         setBranchText3(generateRandomChars(length3));
         setBranchText4(generateRandomChars(length4));
-      }, 100);
+      }, 220);
     }
   };
 

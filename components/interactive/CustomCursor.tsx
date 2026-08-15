@@ -114,19 +114,30 @@ const CustomCursor = () => {
   }, []);
 
   useEffect(() => {
+    let magnetCache: HTMLElement[] = [];
+    let magnetCacheAt = 0;
+    const refreshMagnetCache = () => {
+      magnetCache = Array.from(document.querySelectorAll(SELECTOR)).filter((el) => {
+        const htmlEl = el as HTMLElement;
+        if (htmlEl.closest('[data-cursor-no-magnetic]') && !htmlEl.hasAttribute('data-cursor-magnetic')) return false;
+        const r = htmlEl.getBoundingClientRect();
+        return r.height <= 140 && r.width <= 280;
+      }) as HTMLElement[];
+      magnetCacheAt = performance.now();
+    };
+    refreshMagnetCache();
+
     const onMouseMove = (e: MouseEvent) => {
       mouse.current.x = e.clientX;
       mouse.current.y = e.clientY;
 
       if (isHovering.current) return;
+      if (performance.now() - magnetCacheAt > 800) refreshMagnetCache();
 
-      const elements = document.querySelectorAll(SELECTOR);
       let closest: Element | null = null;
       let closestDist = Infinity;
 
-      elements.forEach((el) => {
-        const htmlEl = el as HTMLElement;
-        if (htmlEl.closest('[data-cursor-no-magnetic]') && !htmlEl.hasAttribute('data-cursor-magnetic')) return;
+      magnetCache.forEach((el) => {
         const rect = el.getBoundingClientRect();
         const cx = rect.left + rect.width / 2;
         const cy = rect.top + rect.height / 2;
@@ -167,8 +178,12 @@ const CustomCursor = () => {
       const label = el.getAttribute('data-cursor-label') || el.getAttribute('aria-label') || '';
       currentLabel.current = label;
 
-      const newW = rect.width + 12;
-      const newH = rect.height + 12;
+      const huge = rect.height > 140 || rect.width > 280;
+      if (huge) {
+        snapTarget.current = null;
+      }
+      const newW = huge ? 28 : Math.min(rect.width + 12, 64);
+      const newH = huge ? 28 : Math.min(rect.height + 12, 64);
       dotSize.current = { w: newW, h: newH };
 
       const dot = dotRef.current;
@@ -249,7 +264,7 @@ const CustomCursor = () => {
       debounceTimer = setTimeout(() => {
         unbind();
         bind();
-      }, 100);
+      }, 400);
     });
 
     observer.observe(document.body, { childList: true, subtree: true });
