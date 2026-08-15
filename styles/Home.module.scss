@@ -27,7 +27,11 @@
   --ark-text: #222222;     // 深灰色文字
   --ark-border: rgba(0, 0, 0, 0.3); // 深色透明边框
   --ark-border-rgb: 0, 0, 0;
-  --ark-text-secondary: #555555; // 中深灰次要文字
+  --ark-text-secondary: #555555;
+  --ark-text-secondary-rgb: 85, 85, 85;
+  --ark-secondary-rgb: 236, 228, 242;
+  --ark-secondary-inverted-rgb: 236, 228, 242;
+  --ark-highlight-pink: #e08fff;
   
   // 特定元素样式覆盖
   &.container {
