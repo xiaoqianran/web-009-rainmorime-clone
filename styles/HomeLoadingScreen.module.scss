@@ -468,6 +468,24 @@
   white-space: nowrap;
 }
 
+.skip_hint {
+  margin-top: 10px;
+  font-family: 'Dosis', var(--font-primary), sans-serif;
+  font-size: clamp(0.62rem, 1vw, 0.78rem);
+  font-weight: 300;
+  letter-spacing: 0.38em;
+  text-transform: uppercase;
+  color: rgba(140, 170, 140, 0.42);
+  white-space: nowrap;
+  opacity: 0;
+  animation: skipHintFade 1.4s ease-out 0.5s forwards;
+}
+
+@keyframes skipHintFade {
+  from { opacity: 0; }
+  to { opacity: 0.75; }
+}
+
 // ===== Console output =====
 .console_output {
   position: absolute;
@@ -1072,6 +1090,11 @@
 
   .progress_fill {
     transition: none;
+  }
+
+  .skip_hint {
+    animation: none;
+    opacity: 0.75;
   }
 
   .split_diamond,

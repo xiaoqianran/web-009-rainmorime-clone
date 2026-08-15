@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 export default function LifeRedirect() {
   const router = useRouter();
   useEffect(() => {
-    router.replace('/content#life');
+    router.replace({ pathname: '/content', hash: 'life' });
   }, [router]);
   return null;
 }

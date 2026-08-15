@@ -135,7 +135,7 @@ export default function NavigationColumns({
           return (
             <div
               key={name}
-              className={`${styles.column} ${styles['column' + index]} ${!textVisible ? styles.nonInteractive : ''}`}
+              className={`${styles.column} ${styles['column' + index]} ${index === 0 ? styles.worksColumn : ''} ${!textVisible ? styles.nonInteractive : ''}`}
               onClick={(textVisible || mainVisible) ? () => handleColumnClick(index) : undefined}
               onMouseEnter={() => handleColumnMouseEnter(index)}
               onMouseLeave={() => handleColumnMouseLeave(index)}
@@ -195,6 +195,15 @@ export default function NavigationColumns({
                     <div className={`${styles.radarRipple} ${styles.ripple1}`}></div>
                     <div className={`${styles.radarRipple} ${styles.ripple2}`}></div>
                     <div className={`${styles.radarRipple} ${styles.ripple3}`}></div>
+                  </>
+                )}
+                {index === 6 && (
+                  <>
+                    <div className={`${styles.friendPing} ${styles.friendPing1}`}></div>
+                    <div className={`${styles.friendPing} ${styles.friendPing2}`}></div>
+                    <div className={`${styles.friendPing} ${styles.friendPing3}`}></div>
+                    <div className={`${styles.friendPing} ${styles.friendPing4}`}></div>
+                    <div className={`${styles.friendPing} ${styles.friendPing5}`}></div>
                   </>
                 )}
               </div>

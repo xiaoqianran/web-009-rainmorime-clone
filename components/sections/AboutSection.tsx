@@ -16,7 +16,7 @@ export default function AboutSection({
         <div className={styles.siteStatsContainer}>
           <p>系统运行时长: {runtime}</p>
           <p>累计访问量: {totalVisits}</p>
-          <p>当前在线用户: {currentVisitors}</p>
+          <p>本机会话: {currentVisitors}</p>
         </div>
         <div className={styles.footerInfo}>
           <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener noreferrer" className={styles.licenseLink}>

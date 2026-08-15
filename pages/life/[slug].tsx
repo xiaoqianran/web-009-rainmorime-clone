@@ -10,6 +10,7 @@ import LazyImage from '../../components/shared/LazyImage';
 import Lightbox from '../../components/interactive/Lightbox';
 import { gameData, travelData, otherData } from '../../data/life';
 import type { LifeItem } from '../../types';
+import { withBase } from '../../lib/paths';
 
 const ALL_ITEMS: LifeItem[] = [...gameData, ...travelData, ...otherData];
 
@@ -375,7 +376,7 @@ function LifeDetailContent({ item }: PageProps) {
           <footer className={styles.footer}>
             {prevItem ? (
               <a
-                href={`/life/${prevItem.id}`}
+                href={withBase(`/life/${prevItem.id}/`)}
                 className={`${styles.footerNavButton} ${styles.footerNavPrev}`}
                 onClick={(e) => { e.preventDefault(); navigateTo(`/life/${prevItem.id}`); }}
                 data-cursor-label="PREVIOUS"
@@ -385,7 +386,7 @@ function LifeDetailContent({ item }: PageProps) {
               </a>
             ) : (
               <a
-                href={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}/content#life`}
+                href={withBase('/content#life')}
                 className={`${styles.footerNavButton} ${styles.footerNavPrev}`}
                 onClick={handleBack}
                 data-cursor-label="BACK"
@@ -396,7 +397,7 @@ function LifeDetailContent({ item }: PageProps) {
             )}
             {nextItem ? (
               <a
-                href={`/life/${nextItem.id}`}
+                href={withBase(`/life/${nextItem.id}/`)}
                 className={`${styles.footerNavButton} ${styles.footerNavNext}`}
                 onClick={(e) => { e.preventDefault(); navigateTo(`/life/${nextItem.id}`); }}
                 data-cursor-label="NEXT"
@@ -406,7 +407,7 @@ function LifeDetailContent({ item }: PageProps) {
               </a>
             ) : (
               <a
-                href={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}/content#life`}
+                href={withBase('/content#life')}
                 className={`${styles.footerNavButton} ${styles.footerNavNext}`}
                 onClick={handleBack}
                 data-cursor-label="BACK"

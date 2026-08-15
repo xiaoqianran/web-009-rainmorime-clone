@@ -12,6 +12,7 @@ import styles from '../../styles/BlogDetailView.module.scss';
 import hudStyles from '../../styles/Home.module.scss';
 import { useApp } from '../../contexts/AppContext';
 import { useTransition } from '../../contexts/TransitionContext';
+import { withBase } from '../../lib/paths';
 
 interface BlogPostPageProps {
   meta: BlogPostMeta;
@@ -270,7 +271,7 @@ function BlogDetailContent({ meta, mdxSource, allPosts }: BlogPostPageProps) {
           <div className={styles.footerNav}>
             {prevPost ? (
               <a
-                href={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}/blog/${prevPost.slug}`}
+                href={withBase(`/blog/${prevPost.slug}/`)}
                 className={`${styles.footerNavButton} ${styles.footerNavPrev}`}
                 onClick={(e) => { e.preventDefault(); navigateTo(`/blog/${prevPost.slug}`); }}
                 data-cursor-label="PREVIOUS"
@@ -280,7 +281,7 @@ function BlogDetailContent({ meta, mdxSource, allPosts }: BlogPostPageProps) {
               </a>
             ) : (
               <a
-                href={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}/blog`}
+                href={withBase('/content#blog')}
                 className={`${styles.footerNavButton} ${styles.footerNavPrev}`}
                 onClick={handleBack}
                 data-cursor-label="BACK"
@@ -291,7 +292,7 @@ function BlogDetailContent({ meta, mdxSource, allPosts }: BlogPostPageProps) {
             )}
             {nextPost ? (
               <a
-                href={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}/blog/${nextPost.slug}`}
+                href={withBase(`/blog/${nextPost.slug}/`)}
                 className={`${styles.footerNavButton} ${styles.footerNavNext}`}
                 onClick={(e) => { e.preventDefault(); navigateTo(`/blog/${nextPost.slug}`); }}
                 data-cursor-label="NEXT"
@@ -301,7 +302,7 @@ function BlogDetailContent({ meta, mdxSource, allPosts }: BlogPostPageProps) {
               </a>
             ) : (
               <a
-                href={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}/blog`}
+                href={withBase('/content#blog')}
                 className={`${styles.footerNavButton} ${styles.footerNavNext}`}
                 onClick={handleBack}
                 data-cursor-label="BACK"

@@ -14,10 +14,15 @@ import GlobalHud from './GlobalHud';
 import LeftPanel from './LeftPanel';
 
 
+let tesseractLoadFailed = false;
+let notifyTesseractFail: (() => void) | null = null;
+
 const TesseractExperience = dynamic(
-  () => import('../effects/TesseractExperience').catch(() => ({
-    default: () => null,
-  })),
+  () => import('../effects/TesseractExperience').catch(() => {
+    tesseractLoadFailed = true;
+    notifyTesseractFail?.();
+    return { default: () => null };
+  }),
   { ssr: false, loading: () => null }
 );
 
@@ -33,6 +38,7 @@ export default function MainLayout({ children }) {
   const { navigateTo, handleBack, isDetailOpen } = useTransition();
   const { isMobile, isDesktop } = useResponsive();
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [tesseractOk, setTesseractOk] = useState(!tesseractLoadFailed);
   const app = useApp();
   const {
     mainVisible, isInverted, isTesseractActivated, animationsComplete,
@@ -97,20 +103,26 @@ export default function MainLayout({ children }) {
   deactivateTesseractRef.current = deactivateTesseract;
 
   useEffect(() => {
-    if (!isDesktop && isTesseractActivated) {
+    notifyTesseractFail = () => setTesseractOk(false);
+    if (tesseractLoadFailed) setTesseractOk(false);
+    return () => { notifyTesseractFail = null; };
+  }, []);
+
+  useEffect(() => {
+    if (isTesseractActivated && (!isDesktop || !tesseractOk)) {
       const interval = setInterval(() => {
         chargeBatteryRef.current();
       }, 400);
       return () => clearInterval(interval);
     }
-  }, [isDesktop, isTesseractActivated]);
+  }, [isDesktop, isTesseractActivated, tesseractOk]);
 
   // 移动端：充满 100% 自动放下充电拉杆
   useEffect(() => {
-    if (!isDesktop && powerLevel >= 100 && isTesseractActivated) {
+    if (powerLevel >= 100 && isTesseractActivated && (!isDesktop || !tesseractOk)) {
       deactivateTesseractRef.current();
     }
-  }, [isDesktop, powerLevel, isTesseractActivated]);
+  }, [isDesktop, tesseractOk, powerLevel, isTesseractActivated]);
 
   const handleGlobalBackClick = () => {
     if (!isDetailOpen()) {
@@ -162,11 +174,12 @@ export default function MainLayout({ children }) {
       {isDesktop && <CustomCursor />}
       {webglReady && isDesktop && <RainMorimeEffect />}
       <HomeLoadingScreen onComplete={handleLoadingComplete} />
-      {isTesseractActivated && isDesktop && !isStandalone && (
+      {isHome && isTesseractActivated && isDesktop && tesseractOk && (
         <TesseractExperience
           chargeBattery={chargeBattery}
           isActivated={isTesseractActivated}
           isInverted={isInverted}
+          onFail={() => setTesseractOk(false)}
         />
       )}
       <div className={styles.gridBackground}></div>

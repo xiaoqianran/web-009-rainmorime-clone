@@ -181,6 +181,7 @@ const HomeLoadingScreen = ({ onComplete }: { onComplete: () => void }) => {
               <span className={styles.progress_suffix}>] {Math.floor(progress).toString().padStart(3, ' ')}%</span>
             </div>
           </div>
+          <div className={styles.skip_hint}>CLICK / SCROLL TO SKIP</div>
         </div>
       </div>
     </>

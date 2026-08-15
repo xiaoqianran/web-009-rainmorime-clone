@@ -10,6 +10,7 @@ import LazyImage from '../../components/shared/LazyImage';
 import Lightbox from '../../components/interactive/Lightbox';
 import { webProjects } from '../../data/projects';
 import type { Project } from '../../types';
+import { withBase } from '../../lib/paths';
 
 function useScrollReveal(rootRef: React.RefObject<HTMLElement | null>) {
   const refs = useRef<(HTMLElement | null)[]>([]);
@@ -516,7 +517,7 @@ function WebDetailContent({ project }: PageProps) {
         <footer className={styles.footer}>
           {prevProject ? (
             <a
-              href={`/web/${prevProject.slug}`}
+              href={withBase(`/web/${prevProject.slug}/`)}
               className={`${styles.footerNavButton} ${styles.footerNavPrev}`}
               onClick={(e) => { e.preventDefault(); navigateTo(`/web/${prevProject.slug}`); }}
               data-cursor-label="PREVIOUS"
@@ -526,7 +527,7 @@ function WebDetailContent({ project }: PageProps) {
             </a>
           ) : (
             <a
-              href={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}/content#works`}
+              href={withBase('/content#works')}
               className={`${styles.footerNavButton} ${styles.footerNavPrev}`}
               onClick={handleBack}
               data-cursor-label="BACK"
@@ -537,7 +538,7 @@ function WebDetailContent({ project }: PageProps) {
           )}
           {nextProject ? (
             <a
-              href={`/web/${nextProject.slug}`}
+              href={withBase(`/web/${nextProject.slug}/`)}
               className={`${styles.footerNavButton} ${styles.footerNavNext}`}
               onClick={(e) => { e.preventDefault(); navigateTo(`/web/${nextProject.slug}`); }}
               data-cursor-label="NEXT"
@@ -547,7 +548,7 @@ function WebDetailContent({ project }: PageProps) {
             </a>
           ) : (
             <a
-              href={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}/content#works`}
+              href={withBase('/content#works')}
               className={`${styles.footerNavButton} ${styles.footerNavNext}`}
               onClick={handleBack}
               data-cursor-label="BACK"

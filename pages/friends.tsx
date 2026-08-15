@@ -23,6 +23,8 @@ export default function FriendsPage() {
                 className={styles.friendLinkCard}
                 data-cursor-no-magnetic
               >
+                <span className={styles.cardBorderTopLeft}></span>
+                <span className={styles.cardBorderBottomRight}></span>
                 <div className={styles.friendLinkAvatar}>
                   <img src={link.avatar} alt={link.name} />
                 </div>

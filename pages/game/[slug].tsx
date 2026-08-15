@@ -10,6 +10,7 @@ import LazyImage from '../../components/shared/LazyImage';
 import Lightbox from '../../components/interactive/Lightbox';
 import { gameProjects } from '../../data/projects';
 import type { Project } from '../../types';
+import { withBase } from '../../lib/paths';
 
 function useScrollReveal(rootRef: React.RefObject<HTMLElement | null>) {
   const refs = useRef<(HTMLElement | null)[]>([]);
@@ -474,7 +475,7 @@ function GameDetailContent({ project }: PageProps) {
         <footer className={styles.footer}>
           {prevProject ? (
             <a
-              href={`/game/${prevProject.slug}`}
+              href={withBase(`/game/${prevProject.slug}/`)}
               className={`${styles.footerNavButton} ${styles.footerNavPrev}`}
               onClick={(e) => { e.preventDefault(); navigateTo(`/game/${prevProject.slug}`); }}
               data-cursor-label="PREVIOUS"
@@ -484,7 +485,7 @@ function GameDetailContent({ project }: PageProps) {
             </a>
           ) : (
             <a
-              href={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}/content#works`}
+              href={withBase('/content#works')}
               className={`${styles.footerNavButton} ${styles.footerNavPrev}`}
               onClick={handleBack}
               data-cursor-label="BACK"
@@ -495,7 +496,7 @@ function GameDetailContent({ project }: PageProps) {
           )}
           {nextProject ? (
             <a
-              href={`/game/${nextProject.slug}`}
+              href={withBase(`/game/${nextProject.slug}/`)}
               className={`${styles.footerNavButton} ${styles.footerNavNext}`}
               onClick={(e) => { e.preventDefault(); navigateTo(`/game/${nextProject.slug}`); }}
               data-cursor-label="NEXT"
@@ -505,7 +506,7 @@ function GameDetailContent({ project }: PageProps) {
             </a>
           ) : (
             <a
-              href={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}/content#works`}
+              href={withBase('/content#works')}
               className={`${styles.footerNavButton} ${styles.footerNavNext}`}
               onClick={handleBack}
               data-cursor-label="BACK"

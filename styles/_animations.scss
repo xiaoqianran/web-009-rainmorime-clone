@@ -434,6 +434,21 @@
   }
 }
 
+@keyframes contactRippleExpandShadowSmallInverted {
+  0% {
+    border: 1px solid rgba(var(--ark-primary-rgb), 0.9);
+    box-shadow: 0 0 0 0px rgba(var(--ark-primary-rgb), 0.5);
+    opacity: 0.9;
+    transform: translate(-50%, -50%) scale(0.1);
+  }
+  100% {
+    border: 1px solid rgba(var(--ark-primary-rgb), 0);
+    box-shadow: 0 0 0 20px rgba(var(--ark-primary-rgb), 0);
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1.2);
+  }
+}
+
 // --- Keyframes for Ripples (Original Green) ---
 @keyframes contactRippleExpandShadow {
   0% {

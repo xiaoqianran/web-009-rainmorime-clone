@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 export default function BlogRedirect() {
   const router = useRouter();
   useEffect(() => {
-    router.replace('/content#blog');
+    router.replace({ pathname: '/content', hash: 'blog' });
   }, [router]);
   return null;
 }

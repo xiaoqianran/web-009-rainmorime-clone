@@ -749,7 +749,7 @@
   padding-bottom: 50px;
   background-image: url('/web-009-rainmorime-clone/terrain.svg');
   background-size: cover;
-  background-position: center center;
+  background-position: center 300px;
   background-repeat: no-repeat;
   margin-bottom: 0px; // --- ADD: Negative margin to pull About section up ---
 }
@@ -1960,7 +1960,7 @@
     width: 320px;  
     height: 320px; 
     transform: translate(-50%, -50%); 
-    background-image: none; // Replace with your own character image
+    background-image: url("https://rainmorime-1315830626.cos.ap-beijing.myqcloud.com/images/Test/25015%E7%BB%BF1.png");
     background-repeat: no-repeat;
     background-position: center center;
     background-size: contain; 
@@ -1986,7 +1986,7 @@
     width: 420px; 
     height: 420px; 
     transform: translate(-50%, -50%);
-    background-image: none; // Replace with your own character image
+    background-image: url("https://rainmorime-1315830626.cos.ap-beijing.myqcloud.com/images/Test/25015%E7%81%B04.png");
     background-repeat: no-repeat;
     background-position: center center;
     background-size: contain;
@@ -2011,7 +2011,7 @@
     width: 360px;
     height: 360px;
     transform: translate(-50%, -50%);
-    background-image: none; // Replace with your own character image
+    background-image: url("https://rainmorime-1315830626.cos.ap-beijing.myqcloud.com/images/Test/25015%E7%81%B03.png");
     background-repeat: no-repeat;
     background-position: center center;
     background-size: contain;
@@ -2030,7 +2030,7 @@
   transform: translateX(-50%);
   width: 420px; 
   height: 420px; 
-  background-image: none; // Replace with your own character image
+  background-image: url("https://rainmorime-1315830626.cos.ap-beijing.myqcloud.com/images/Test/25015%E7%81%B03.png");
   background-repeat: no-repeat;
   background-position: center bottom;
   background-size: contain;
@@ -2116,6 +2116,14 @@
     background-color: rgba(var(--ark-secondary-rgb), 0.2);
     border-color: var(--ark-primary);
     transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(var(--ark-primary-rgb), 0.1);
+
+    .cardBorderTopLeft,
+    .cardBorderBottomRight {
+      opacity: 1;
+      width: 30px;
+      height: 30px;
+    }
   }
 
   /* Inverted Mode Styles */

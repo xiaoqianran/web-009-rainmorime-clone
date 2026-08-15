@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 export default function ExperienceRedirect() {
   const router = useRouter();
   useEffect(() => {
-    router.replace('/content#experience');
+    router.replace({ pathname: '/content', hash: 'experience' });
   }, [router]);
   return null;
 }

@@ -6,6 +6,24 @@ import { Line } from '@react-three/drei';
 import * as THREE from 'three';
 import Tesseract from './Tesseract'; // 导入 Tesseract 组件
 
+
+class TesseractErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { failed: false };
+  }
+  static getDerivedStateFromError() {
+    return { failed: true };
+  }
+  componentDidCatch() {
+    this.props.onFail?.();
+  }
+  render() {
+    if (this.state.failed) return null;
+    return this.props.children;
+  }
+}
+
 // 物理碰撞的不可见地面
 function Plane(props) {
   const [ref] = usePlane(() => ({
@@ -58,7 +76,7 @@ function SceneLogic({ isConnecting, tesseractRef, batteryPosition3D, setConnecti
 }
 
 // Tesseract 3D 场景主组件
-const TesseractExperience = ({ chargeBattery, isActivated, isInverted }) => {
+const TesseractExperience = ({ chargeBattery, isActivated, isInverted, onFail }) => {
   const [batteryPosition3D, setBatteryPosition3D] = useState(null); // 电池 3D NDC 坐标
   const [isConnecting, setIsConnecting] = useState(false); // Tesseract 是否连接到电池
   const tesseractRef = useRef(null); // Tesseract 组件引用
@@ -162,30 +180,33 @@ const TesseractExperience = ({ chargeBattery, isActivated, isInverted }) => {
   };
 
   return (
-    // 3D Canvas 容器 div
+    <TesseractErrorBoundary onFail={onFail}>
     <div style={{ 
       position: 'fixed', 
       top: '17.5vh',    // 匹配 UI 红色区域顶部
       left: '7.3vw',   // 匹配红色区域左侧
       width: '40.2vw',  // 匹配红色区域宽度
       height: '65vh', // 匹配红色区域高度
-      zIndex: 7, // 层级
+      zIndex: 3, // below leftPanel (10) and content
       pointerEvents: 'none', // 容器不响应鼠标事件
     }}>
       <Canvas
         shadows // 启用阴影
         camera={{ position: [-3, -1, 8], fov: 50 }} // 相机
         style={{ 
-          background: 'transparent', // 背景透明
-          userSelect: 'none', // 禁用文本选择
+          background: 'transparent',
+          pointerEvents: 'none',
+          userSelect: 'none',
           WebkitUserSelect: 'none',
           MozUserSelect: 'none',
           msUserSelect: 'none'
         }}
-        gl={{ alpha: true }} // WebGL 透明背景
-        onCreated={({ gl }) => { // Canvas 创建后
-          glRef.current = gl; // 存储 WebGLRenderer
-          gl.setClearColor(new THREE.Color(0, 0, 0), 0); // 清除颜色为透明
+        gl={{ alpha: true, antialias: true, premultipliedAlpha: false }}
+        onCreated={({ gl }) => {
+          glRef.current = gl;
+          gl.setClearColor(0x000000, 0);
+          gl.domElement.style.background = 'transparent';
+          gl.domElement.style.pointerEvents = 'none';
         }}
       >
         <Suspense fallback={null}> {/* 异步加载占位符 */}
@@ -242,6 +263,7 @@ const TesseractExperience = ({ chargeBattery, isActivated, isInverted }) => {
         </Suspense>
       </Canvas>
     </div>
+    </TesseractErrorBoundary>
   );
 };
 

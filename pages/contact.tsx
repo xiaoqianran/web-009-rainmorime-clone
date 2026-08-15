@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 export default function ContactRedirect() {
   const router = useRouter();
   useEffect(() => {
-    router.replace('/content#contact');
+    router.replace({ pathname: '/content', hash: 'contact' });
   }, [router]);
   return null;
 }

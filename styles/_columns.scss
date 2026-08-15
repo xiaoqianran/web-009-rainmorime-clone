@@ -437,6 +437,14 @@
   }
 }
 
+// Column 2 (BLOG - Blueprint)
+.column2:hover:not(.nonInteractive) {
+  .hudOverlay::before {
+    animation: worksBlueprint 0.8s ease-out forwards;
+  }
+  .imageHud { bottom: 15px; left: 15px; }
+}
+
 // Column 3 (LIFE - Pulse) - Replaced with ECG
 .column3:hover:not(.nonInteractive) {
   // --- 恢复: 上方 ECG 波形样式 --- 
@@ -560,6 +568,62 @@
   .randomHud3 { top: 75%; left: 10%; animation-delay: 0.4s; transform: scale(1.1); } // Slightly larger
   .randomHud4 { top: 85%; left: 60%; animation-delay: 0.5s; }
   .randomHud5 { top: 5%; left: 55%; animation-delay: 0.55s; transform: scale(0.95); } 
+}
+
+// Column 6 (FRIENDS - signal / link pings)
+.column6:hover:not(.nonInteractive) {
+  .hudOverlay::before {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 1px solid rgba(178, 242, 187, 0.9);
+    animation: expandGreenRing 1.8s ease-out infinite;
+    filter: drop-shadow(0 0 4px var(--ark-highlight-green));
+  }
+
+  .imageHud {
+    top: 15px;
+    right: 15px;
+  }
+
+  .friendPing {
+    animation: friendPingPulse 1.6s ease-out infinite;
+  }
+
+  .friendPing1 { top: 22%; left: 30%; animation-delay: 0.12s; }
+  .friendPing2 { top: 40%; left: 68%; animation-delay: 0.28s; }
+  .friendPing3 { top: 58%; left: 24%; animation-delay: 0.44s; }
+  .friendPing4 { top: 72%; left: 56%; animation-delay: 0.60s; }
+  .friendPing5 { top: 48%; left: 46%; animation-delay: 0.76s; }
+}
+
+.friendPing {
+  position: absolute;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: var(--ark-highlight-green);
+  box-shadow: 0 0 6px var(--ark-highlight-green);
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, -50%) scale(0.6);
+  z-index: 2;
+}
+
+@keyframes friendPingPulse {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.45);
+  }
+  28% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1.85);
+    box-shadow: 0 0 0 8px rgba(178, 242, 187, 0);
+  }
 }
 
 // --- 修改: radarRipple 基础样式 (修改: 初始边框宽度设为 1px) ---
@@ -873,7 +937,8 @@
 
   // 清除每列的桌面端 left 定位
   .column0, .column1, .column2,
-  .column3, .column4, .column5 {
+  .column3, .column4, .column5,
+  .column6 {
     left: auto;
   }
 
@@ -1000,6 +1065,7 @@
   .column3::after { content: 'SEC-004' !important; }
   .column4::after { content: 'SEC-005' !important; }
   .column5::after { content: 'SEC-006' !important; }
+  .column6::after { content: 'SEC-007' !important; }
 
   .column::after {
     position: absolute !important;
