@@ -51,12 +51,18 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 10;
+  z-index: 4;
   pointer-events: none;
   overflow: hidden;
 
-  & > * {
+  /* Only real controls steal clicks. Decorative HUD used to sit on a
+     full-size hit layer and ate column / card / button presses. */
+  .leverGroup,
+  .globalBackButton.visible,
+  .leftNavLinks.visible,
+  .powerDisplay {
     pointer-events: auto;
+    z-index: 20;
   }
 
   // 独立页（game/life detail）→ 整个面板统一淡出
@@ -145,6 +151,7 @@
   transform-origin: left center;
   overflow: visible;
   pointer-events: none;
+  z-index: 6;
 
   @media (max-width: 1023px) {
     // 重置桌面端的 skew/绝对定位，改为流式纵向布局

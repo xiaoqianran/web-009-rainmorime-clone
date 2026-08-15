@@ -61,6 +61,7 @@ const MusicPlayer = ({ powerLevel }: { powerLevel: number }) => {
   const [isOpen, setIsOpen] = useState(false); // 初始状态为收起
   const [isPlaying, setIsPlaying] = useState(false); // 是否正在播放
   const audioRef = useRef(null); // Audio 元素引用
+  const playerRef = useRef(null);
 
   const [currentTime, setCurrentTime] = useState(0); // 当前播放时间
   const [duration, setDuration] = useState(0); // 音频总时长
@@ -107,6 +108,16 @@ const MusicPlayer = ({ powerLevel }: { powerLevel: number }) => {
     setIsOpen(!isOpen);
     if (isOpen) setIsPlaylistVisible(false); // 关闭抽屉时同时隐藏播放列表
   };
+
+  useEffect(() => {
+    if (!isOpen) return;
+    const onDoc = (e) => {
+      const node = playerRef.current;
+      if (node && !node.contains(e.target)) setIsOpen(false);
+    };
+    document.addEventListener('pointerdown', onDoc);
+    return () => document.removeEventListener('pointerdown', onDoc);
+  }, [isOpen]);
 
   // 切换播放/暂停状态 (主要通过 audio 事件更新 isPlaying)
   const togglePlay = (e) => {
@@ -446,7 +457,7 @@ const MusicPlayer = ({ powerLevel }: { powerLevel: number }) => {
   }, [isPlaying]);
 
   return (
-    <div className={`${styles.playerContainer} ${isOpen ? styles.open : ''}`}>
+    <div ref={playerRef} className={`${styles.playerContainer} ${isOpen ? styles.open : ''}`}>
       {/* 抽屉把手：点击切换抽屉，播放时显示动画条和当前歌曲名 (若收起) */}
       <div 
         ref={handleRef} 
@@ -460,6 +471,8 @@ const MusicPlayer = ({ powerLevel }: { powerLevel: number }) => {
         onPointerUp={handleVolumePointerUp}
         onPointerCancel={handleVolumePointerUp}
         data-cursor-magnetic
+        data-cursor-label="MUSIC"
+        aria-label="打开或关闭音乐盒"
       >
         {/* 动画线条容器 */}
         <div className={styles.handleBarsContainer}>
