@@ -35,6 +35,10 @@
   --ark-accent: #4c4f69;
   --ark-bg-dark: #e6e9ef;
   --ark-highlight: #4c4f69;
+
+  .logoContainer {
+    filter: grayscale(100%) brightness(0.35) drop-shadow(0 0 5px rgba(76, 79, 105, 0.2));
+  }
   
   // 特定元素样式覆盖
   &.container {

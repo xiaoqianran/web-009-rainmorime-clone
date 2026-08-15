@@ -82,14 +82,20 @@
   cursor: none;
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
   z-index: 10;
-  pointer-events: auto;
+  pointer-events: none; // wide boxes overlap after skew; only the label is live
   background-color: transparent;
   display: flex;
   justify-content: center;
   align-items: center;
   overflow: hidden;
 
-  &:hover {
+  .verticalText {
+    pointer-events: auto;
+    z-index: 12;
+  }
+
+  &:hover,
+  &:has(.verticalText:hover) {
     &:not(.nonInteractive) {
       &:not(.worksColumn) {
         background-color: rgba(166, 227, 161, 0.08);
@@ -1167,7 +1173,7 @@
     width: 100%;
     flex: 1 1 auto;
     min-height: 0;
-    background-image: url('/web-009-rainmorime-clone/avatar.jpg'); // Replace with your own avatar/background image
+    background-image: url('/web-009-rainmorime-clone/RM2.png'); // Replace with your own avatar/background image
     background-position: center;
     background-repeat: no-repeat;
     background-size: 130%;

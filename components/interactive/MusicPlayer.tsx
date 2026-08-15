@@ -478,6 +478,15 @@ const MusicPlayer = ({ powerLevel }: { powerLevel: number }) => {
         <div className={styles.handleBarsContainer}>
           {[...Array(7)].map((_, i) => <div key={i} className={styles.handleBar}></div>)}
         </div>
+        {!isPlaying && (
+          <div className={styles.handleTrackInfo} aria-hidden="true">
+            <div className={styles.handleTrackTitle}>
+              {['M','U','S','I','C'].map((ch, i) => (
+                <span key={i} className={styles.charItem}>{ch}</span>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* 收起且播放时，在把手上显示当前歌曲名 (竖排) */}
         {!isOpen && isPlaying && currentTrack && (
