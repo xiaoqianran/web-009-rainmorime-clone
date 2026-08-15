@@ -3,7 +3,8 @@ import styles from './ActivationLever.module.scss';
 
 const REST_Y = 15;
 const ACTIVE_Y = 45;
-const DRAG_THRESHOLD = 22;
+const DRAG_THRESHOLD = 10;
+const HOLD_MS = 140;
 
 const icons = {
   discharge: (
@@ -27,6 +28,7 @@ const ActivationLever = ({
   isAnimated,
   cursorLabel,
   ariaLabel,
+  lockWhenActive = false,
 }: {
   onActivate: () => void;
   isActive: boolean;
@@ -34,19 +36,37 @@ const ActivationLever = ({
   isAnimated?: boolean;
   cursorLabel?: string;
   ariaLabel?: string;
+  lockWhenActive?: boolean;
 }) => {
   const [dragY, setDragY] = useState<number | null>(null);
   const draggingRef = useRef(false);
   const startYRef = useRef(0);
-  const activatedThisDragRef = useRef(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const pointerIdRef = useRef<number | null>(null);
+  const holdTimerRef = useRef<number | null>(null);
+  const onActivateRef = useRef(onActivate);
+  onActivateRef.current = onActivate;
 
   const handleY = isActive ? ACTIVE_Y : (dragY ?? REST_Y);
 
+  const stopHold = useCallback(() => {
+    if (holdTimerRef.current != null) {
+      window.clearInterval(holdTimerRef.current);
+      holdTimerRef.current = null;
+    }
+  }, []);
+
+  const startHold = useCallback(() => {
+    if (holdTimerRef.current != null) return;
+    onActivateRef.current();
+    holdTimerRef.current = window.setInterval(() => {
+      onActivateRef.current();
+    }, HOLD_MS);
+  }, []);
+
   const endDrag = useCallback(() => {
     draggingRef.current = false;
-    activatedThisDragRef.current = false;
+    stopHold();
     setDragY(null);
     const id = pointerIdRef.current;
     const node = containerRef.current;
@@ -54,7 +74,7 @@ const ActivationLever = ({
       try { node.releasePointerCapture(id); } catch {}
     }
     pointerIdRef.current = null;
-  }, []);
+  }, [stopHold]);
 
   useEffect(() => {
     const onMove = (e: PointerEvent) => {
@@ -62,10 +82,8 @@ const ActivationLever = ({
       const delta = e.clientY - startYRef.current;
       const next = Math.max(REST_Y, Math.min(ACTIVE_Y, REST_Y + delta));
       setDragY(next);
-      if (!activatedThisDragRef.current && delta >= DRAG_THRESHOLD) {
-        activatedThisDragRef.current = true;
-        onActivate();
-      }
+      if (delta >= DRAG_THRESHOLD) startHold();
+      else stopHold();
     };
     const onUp = () => {
       if (draggingRef.current) endDrag();
@@ -78,14 +96,15 @@ const ActivationLever = ({
       window.removeEventListener('pointerup', onUp);
       window.removeEventListener('pointercancel', onUp);
     };
-  }, [onActivate, endDrag]);
+  }, [endDrag, startHold, stopHold]);
+
+  useEffect(() => () => stopHold(), [stopHold]);
 
   const handlePointerDown = (e: React.PointerEvent) => {
-    if (isActive) return;
+    if (lockWhenActive && isActive) return;
     e.preventDefault();
     e.stopPropagation();
     draggingRef.current = true;
-    activatedThisDragRef.current = false;
     startYRef.current = e.clientY;
     pointerIdRef.current = e.pointerId;
     setDragY(REST_Y);
@@ -95,17 +114,17 @@ const ActivationLever = ({
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    if (isActive || draggingRef.current) return;
-    // Nudge the handle so a click teaches "drag down" instead of feeling broken.
-    setDragY(REST_Y + 14);
-    window.setTimeout(() => setDragY(null), 280);
+    if (lockWhenActive && isActive) return;
+    onActivateRef.current();
+    setDragY(REST_Y + 16);
+    window.setTimeout(() => setDragY(null), 220);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (isActive) return;
+    if (lockWhenActive && isActive) return;
     if (e.key === 'Enter' || e.key === ' ' || e.key === 'ArrowDown') {
       e.preventDefault();
-      onActivate();
+      onActivateRef.current();
     }
   };
 
@@ -123,11 +142,12 @@ const ActivationLever = ({
       onLostPointerCapture={endDrag}
       onClick={handleClick}
       onKeyDown={handleKeyDown}
-      role="button"
+      role="slider"
+      aria-valuemin={0}
+      aria-valuemax={100}
       tabIndex={0}
       aria-label={ariaLabel || (iconType === 'drain' ? '向下拖动放电' : '向下拖动充电')}
-      data-cursor-label={cursorLabel || 'DRAG DOWN'}
-      data-cursor-magnetic
+      data-cursor-label={cursorLabel || 'DRAG TO CHANGE'}
       style={{ touchAction: 'none' }}
     >
       <svg viewBox="0 0 50 90" className={styles.leverSvg}>

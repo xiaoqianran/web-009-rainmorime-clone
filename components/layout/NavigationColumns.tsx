@@ -140,6 +140,20 @@ export default function NavigationColumns({
               onMouseEnter={() => handleColumnMouseEnter(index)}
               onMouseLeave={() => handleColumnMouseLeave(index)}
             >
+              <span
+                className={styles.columnHit}
+                role="button"
+                tabIndex={0}
+                data-cursor-magnetic
+                data-cursor-label={name}
+                aria-label={name}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    if (textVisible || mainVisible) handleColumnClick(index);
+                  }
+                }}
+              />
               <div className={styles.verticalText}>
                 {name.split('').map((char, charIdx) => {
                   const delay = `${charIdx * 0.005}s`;

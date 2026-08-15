@@ -213,6 +213,7 @@ export default function MainLayout({ children }) {
             mainVisible={mainVisible}
             leversVisible={localLeversVisible}
             handleActivateTesseract={handleActivateTesseract}
+            chargeBattery={chargeBattery}
             isTesseractActivated={isTesseractActivated}
             handleDischargeLeverPull={handleDischargeLeverPull}
             isDischarging={isDischarging}

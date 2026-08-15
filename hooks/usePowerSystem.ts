@@ -36,7 +36,7 @@ export default function usePowerSystem(mainVisible: boolean): PowerSystemState {
 
   // Discharge lever pull handler
   const handleDischargeLeverPull = () => {
-    if (powerLevel === 100 && !isDischarging) {
+    if (powerLevel > 0 && !isDischarging) {
       setIsDischarging(true);
     }
   };

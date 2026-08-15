@@ -89,12 +89,25 @@
   align-items: center;
   overflow: hidden;
 
-  .verticalText {
+  .columnHit {
+    position: absolute;
+    top: 6%;
+    bottom: 6%;
+    left: 50%;
+    width: 56px;
+    transform: translateX(-50%);
     pointer-events: auto;
     z-index: 12;
   }
 
+  .verticalText {
+    pointer-events: auto;
+    z-index: 13;
+    padding: 12px 18px;
+  }
+
   &:hover,
+  &:has(.columnHit:hover),
   &:has(.verticalText:hover) {
     &:not(.nonInteractive) {
       &:not(.worksColumn) {

@@ -43,6 +43,7 @@ export default function LeftPanel({
   mainVisible,
   leversVisible,
   handleActivateTesseract,
+  chargeBattery,
   isTesseractActivated,
   handleDischargeLeverPull,
   isDischarging,
@@ -81,22 +82,24 @@ export default function LeftPanel({
       <div className={styles.leverGroup}>
         {mainVisible && (
           <ActivationLever
-            onActivate={handleActivateTesseract}
-            isActive={isTesseractActivated}
+            onActivate={() => { handleActivateTesseract(); chargeBattery(); }}
+            isActive={false}
+            lockWhenActive={false}
             iconType="discharge"
             isAnimated={leversVisible}
             cursorLabel="DRAG TO CHARGE"
-            ariaLabel="向下拖动充电"
+            ariaLabel="按住向下拖动充电"
           />
         )}
         {mainVisible && (
           <ActivationLever
             onActivate={handleDischargeLeverPull}
             isActive={isDischarging}
+            lockWhenActive
             iconType="drain"
             isAnimated={leversVisible}
-            cursorLabel={powerLevel === 100 ? 'DRAG TO RESET' : 'NEED 100%'}
-            ariaLabel={powerLevel === 100 ? '向下拖动复位负色' : '电量满 100% 后才能放电'}
+            cursorLabel={powerLevel > 0 ? 'DRAG TO DRAIN' : 'EMPTY'}
+            ariaLabel="按住向下拖动放电"
           />
         )}
         {mainVisible && leversVisible && (
