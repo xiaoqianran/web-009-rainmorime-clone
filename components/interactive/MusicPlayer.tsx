@@ -62,13 +62,6 @@ const MusicPlayer = ({ powerLevel }: { powerLevel: number }) => {
   const [isPlaying, setIsPlaying] = useState(false); // 是否正在播放
   const audioRef = useRef(null); // Audio 元素引用
 
-  // 挂载后延迟弹出唱片机以暗示功能
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsOpen(true);
-    }, 1500); // 在主界面显示后 1.5 秒弹出
-    return () => clearTimeout(timer);
-  }, []);
   const [currentTime, setCurrentTime] = useState(0); // 当前播放时间
   const [duration, setDuration] = useState(0); // 音频总时长
   const progressBarRef = useRef(null); // 进度条填充元素引用

@@ -288,8 +288,8 @@
 }
 .dialogueCard:hover {
   transform: translateY(-4px);
-  border-color: rgba(178, 242, 187, 0.3);
-  background: rgba(178, 242, 187, 0.04);
+  border-color: rgba(166, 227, 161, 0.3);
+  background: rgba(166, 227, 161, 0.04);
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
 }
 .dialogueCard:active {
@@ -305,7 +305,7 @@
 
 .cardSelected {
   border-color: var(--ark-highlight-green);
-  background: rgba(178, 242, 187, 0.08);
+  background: rgba(166, 227, 161, 0.08);
   animation: cardFlash 0.3s ease-out;
 }
 
@@ -354,7 +354,7 @@
 }
 
 .layer_base {
-  border-top-color: rgba(178, 242, 187, 0.5);
+  border-top-color: rgba(166, 227, 161, 0.5);
 }
 
 .layer_drift {
@@ -406,7 +406,7 @@
 
 .trustPositive .trustDeltaLabel {
   color: var(--ark-highlight-green);
-  text-shadow: 0 0 12px rgba(178, 242, 187, 0.4);
+  text-shadow: 0 0 12px rgba(166, 227, 161, 0.4);
 }
 
 .trustNegative .trustDeltaLabel {
@@ -475,7 +475,7 @@
   position: relative;
   z-index: 1;
   scrollbar-width: thin;
-  scrollbar-color: rgba(178, 242, 187, 0.2) transparent;
+  scrollbar-color: rgba(166, 227, 161, 0.2) transparent;
 }
 .panelBody::-webkit-scrollbar {
   width: 4px;
@@ -484,7 +484,7 @@
   background: transparent;
 }
 .panelBody::-webkit-scrollbar-thumb {
-  background: rgba(178, 242, 187, 0.2);
+  background: rgba(166, 227, 161, 0.2);
 }
 
 .systemPanel {
@@ -501,7 +501,7 @@
   align-items: center;
   padding: 6px 0;
   margin-bottom: 10px;
-  border-bottom: 1px solid rgba(178, 242, 187, 0.1);
+  border-bottom: 1px solid rgba(166, 227, 161, 0.1);
 }
 
 .dayLabel {
@@ -515,7 +515,7 @@
   font-family: var(--font-mono);
   font-size: var(--fs-xs);
   color: var(--ark-highlight-green);
-  border: 1px solid rgba(178, 242, 187, 0.3);
+  border: 1px solid rgba(166, 227, 161, 0.3);
   padding: 2px 8px;
 }
 
@@ -657,7 +657,7 @@
 
 .statusOnline {
   color: var(--ark-highlight-green);
-  border-color: rgba(178, 242, 187, 0.3);
+  border-color: rgba(166, 227, 161, 0.3);
 }
 
 .statusDamaged {
@@ -680,7 +680,7 @@
   font-family: var(--font-mono);
   font-size: var(--fs-2xs);
   padding: 4px 8px;
-  border: 1px dashed rgba(178, 242, 187, 0.15);
+  border: 1px dashed rgba(166, 227, 161, 0.15);
   margin-bottom: 4px;
   color: var(--ark-primary);
   opacity: 0.35;
@@ -749,12 +749,12 @@
           backdrop-filter: blur(4px);
 }
 .cabinCell:hover {
-  background: rgba(178, 242, 187, 0.06);
-  border-color: rgba(178, 242, 187, 0.35);
+  background: rgba(166, 227, 161, 0.06);
+  border-color: rgba(166, 227, 161, 0.35);
 }
 .cabinCell:hover .cabinLabel {
   color: var(--ark-highlight-green);
-  text-shadow: 0 0 8px rgba(178, 242, 187, 0.4);
+  text-shadow: 0 0 8px rgba(166, 227, 161, 0.4);
 }
 
 .cabinCellWide {
@@ -800,14 +800,14 @@
 .viewBtn:hover {
   color: var(--ark-highlight-green);
   border-color: var(--ark-highlight-green);
-  text-shadow: 0 0 8px rgba(178, 242, 187, 0.4);
-  box-shadow: inset 0 0 12px rgba(178, 242, 187, 0.04);
+  text-shadow: 0 0 8px rgba(166, 227, 161, 0.4);
+  box-shadow: inset 0 0 12px rgba(166, 227, 161, 0.04);
 }
 
 .viewBtnActive {
   color: var(--ark-highlight-green);
-  border-color: rgba(178, 242, 187, 0.5);
-  text-shadow: 0 0 6px rgba(178, 242, 187, 0.3);
+  border-color: rgba(166, 227, 161, 0.5);
+  text-shadow: 0 0 6px rgba(166, 227, 161, 0.3);
 }
 
 .placeholderView {
@@ -889,7 +889,7 @@
 
 .taskIndicatorActive {
   background: var(--ark-highlight-green);
-  box-shadow: 0 0 6px rgba(178, 242, 187, 0.5);
+  box-shadow: 0 0 6px rgba(166, 227, 161, 0.5);
   animation: pulse 2s ease-in-out infinite;
 }
 
@@ -946,7 +946,7 @@
   font-family: var(--font-mono);
   font-size: var(--fs-2xs);
   color: var(--ark-highlight-green);
-  border: 1px solid rgba(178, 242, 187, 0.2);
+  border: 1px solid rgba(166, 227, 161, 0.2);
   padding: 0 4px;
   margin-bottom: 4px;
   letter-spacing: 0.5px;
@@ -1009,14 +1009,14 @@
   top: 12px;
   bottom: 12px;
   width: 1px;
-  background: rgba(178, 242, 187, 0.1);
+  background: rgba(166, 227, 161, 0.1);
 }
 
 .portrait {
   width: 110px;
   height: 110px;
   border: 1px solid var(--ark-border);
-  background: rgba(178, 242, 187, 0.03);
+  background: rgba(166, 227, 161, 0.03);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1072,7 +1072,7 @@
   letter-spacing: 1.5px;
   margin-bottom: 10px;
   padding: 3px 14px;
-  border: 1px solid rgba(178, 242, 187, 0.3);
+  border: 1px solid rgba(166, 227, 161, 0.3);
   background: transparent;
   align-self: flex-start;
 }
@@ -1118,8 +1118,8 @@
   background: transparent;
   border-color: var(--ark-highlight-green);
   color: var(--ark-highlight-green);
-  text-shadow: 0 0 6px rgba(178, 242, 187, 0.3);
-  box-shadow: inset 0 0 12px rgba(178, 242, 187, 0.04);
+  text-shadow: 0 0 6px rgba(166, 227, 161, 0.3);
+  box-shadow: inset 0 0 12px rgba(166, 227, 161, 0.04);
 }
 
 .choiceTone {
@@ -1222,7 +1222,7 @@
   letter-spacing: 1px;
   white-space: pre-wrap;
   margin: 0;
-  text-shadow: 0 0 4px rgba(178, 242, 187, 0.15);
+  text-shadow: 0 0 4px rgba(166, 227, 161, 0.15);
   opacity: 0.85;
 }
 
@@ -1321,7 +1321,7 @@
   position: relative;
   width: min(80%, 400px);
   height: 100px;
-  border: 1px solid rgba(178, 242, 187, 0.15);
+  border: 1px solid rgba(166, 227, 161, 0.15);
   background: rgba(0, 0, 0, 0.3);
   overflow: hidden;
   display: flex;
@@ -1333,7 +1333,7 @@
   content: "";
   position: absolute;
   inset: 0;
-  background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(178, 242, 187, 0.04) 2px, rgba(178, 242, 187, 0.04) 4px);
+  background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(166, 227, 161, 0.04) 2px, rgba(166, 227, 161, 0.04) 4px);
   pointer-events: none;
   z-index: 0;
 }
@@ -1343,7 +1343,7 @@
   height: 2px;
   position: absolute;
   left: 0;
-  background: linear-gradient(90deg, transparent 0%, rgba(178, 242, 187, 0.1) 20%, rgba(178, 242, 187, 0.6) 50%, rgba(178, 242, 187, 0.1) 80%, transparent 100%);
+  background: linear-gradient(90deg, transparent 0%, rgba(166, 227, 161, 0.1) 20%, rgba(166, 227, 161, 0.6) 50%, rgba(166, 227, 161, 0.1) 80%, transparent 100%);
   animation: scanSweep 2.4s ease-in-out infinite;
   opacity: 0.8;
 }
@@ -1397,17 +1397,17 @@
   font-family: var(--font-mono);
   font-size: clamp(13px, 1.5vw, 15px);
   color: var(--ark-highlight-green);
-  background: rgba(178, 242, 187, 0.05);
-  border: 1px solid rgba(178, 242, 187, 0.2);
+  background: rgba(166, 227, 161, 0.05);
+  border: 1px solid rgba(166, 227, 161, 0.2);
   padding: 12px 32px;
   cursor: none;
   letter-spacing: 2px;
   transition: all 0.3s ease;
 }
 .scanExecuteBtn:hover {
-  background: rgba(178, 242, 187, 0.12);
-  border-color: rgba(178, 242, 187, 0.4);
-  text-shadow: 0 0 8px rgba(178, 242, 187, 0.3);
+  background: rgba(166, 227, 161, 0.12);
+  border-color: rgba(166, 227, 161, 0.4);
+  text-shadow: 0 0 8px rgba(166, 227, 161, 0.3);
 }
 
 .resultDisplay {
@@ -1440,8 +1440,8 @@
 
 .trustUp {
   color: var(--ark-highlight-green);
-  border: 1px solid rgba(178, 242, 187, 0.2);
-  text-shadow: 0 0 4px rgba(178, 242, 187, 0.2);
+  border: 1px solid rgba(166, 227, 161, 0.2);
+  text-shadow: 0 0 4px rgba(166, 227, 161, 0.2);
 }
 
 .trustDown {
@@ -1935,7 +1935,7 @@
 }
 
 .toggleOn {
-  border-color: rgba(178, 242, 187, 0.25);
+  border-color: rgba(166, 227, 161, 0.25);
 }
 .toggleOn .toggleKnob {
   background: var(--ark-highlight-green);
@@ -2243,7 +2243,7 @@
 
 .mapTilePlayer {
   color: var(--ark-highlight-green) !important;
-  text-shadow: 0 0 6px rgba(178, 242, 187, 0.5);
+  text-shadow: 0 0 6px rgba(166, 227, 161, 0.5);
   animation: tilePulse 1.5s ease-in-out infinite;
 }
 
@@ -2251,8 +2251,8 @@
   cursor: none;
 }
 .mapTileMovable:hover {
-  background: rgba(178, 242, 187, 0.06);
-  outline: 1px solid rgba(178, 242, 187, 0.2);
+  background: rgba(166, 227, 161, 0.06);
+  outline: 1px solid rgba(166, 227, 161, 0.2);
 }
 
 .mapFooter {
@@ -2437,8 +2437,8 @@
 }
 
 .facilitySelected {
-  outline: 1px solid rgba(178, 242, 187, 0.3);
-  background: rgba(178, 242, 187, 0.04) !important;
+  outline: 1px solid rgba(166, 227, 161, 0.3);
+  background: rgba(166, 227, 161, 0.04) !important;
 }
 
 .cabinConnections {
@@ -2636,7 +2636,7 @@
 }
 @keyframes screenFlash {
   0% {
-    background: rgba(178, 242, 187, 0.3);
+    background: rgba(166, 227, 161, 0.3);
   }
   100% {
     background: transparent;

@@ -13,7 +13,7 @@ const GameLayout = dynamic(() => import('../components/game/GameLayout'), {
       alignItems: 'center',
       justifyContent: 'center',
       fontFamily: 'monospace',
-      color: '#b2f2bb',
+      color: '#a6e3a1',
       fontSize: '14px',
       letterSpacing: '2px',
     }}>

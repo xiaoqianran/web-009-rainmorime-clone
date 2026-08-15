@@ -202,7 +202,7 @@ const Tesseract = forwardRef(({
       <mesh ref={coreRef} castShadow>
         <octahedronGeometry args={[0.08]} />
         <meshBasicMaterial 
-          color={isInverted ? '#E08FFF' : '#B2F2BB'} // 根据反色状态切换颜色
+          color={isInverted ? '#8839ef' : '#a6e3a1'} // 根据反色状态切换颜色
           wireframe={true} // 线框模式
         />
       </mesh>

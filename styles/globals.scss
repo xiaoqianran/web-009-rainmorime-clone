@@ -48,23 +48,51 @@
   --transition-medium: 0.5s cubic-bezier(0.6, 0.05, 0.01, 0.9);
   --transition-fast: 0.3s cubic-bezier(0.6, 0.05, 0.01, 0.9);
 
-  --ark-primary: rgba(198, 206, 202, 0.88);
-  --ark-primary-rgb: 198, 206, 202;
-  --ark-primary-glow: rgba(178, 242, 187, 0.38);
-  --ark-accent: rgba(232, 236, 234, 1);
-  --ark-dark-blue: #0e141c;
-  --ark-border: rgba(178, 242, 187, 0.16);
-  --ark-border-rgb: 178, 242, 187;
-  --ark-text: rgba(228, 234, 230, 0.94);
-  --ark-text-secondary: rgba(168, 180, 176, 0.64);
-  --ark-text-secondary-rgb: 168, 180, 176;
-  --ark-bg-dark: #0e141c;
-  --ark-highlight: rgba(255, 255, 255, 0.92);
-  --ark-highlight-green: #b2f2bb;
-  --ark-highlight-green-rgb: 178, 242, 187;
-  --ark-highlight-pink: #e08fff;
-  --ark-secondary-rgb: 22, 32, 44;
-  --ark-secondary-inverted-rgb: 236, 228, 242;
+  /* Catppuccin Mocha — official palette mapped onto --ark tokens */
+  --ctp-rosewater: #f5e0dc;
+  --ctp-flamingo: #f2cdcd;
+  --ctp-pink: #f5c2e7;
+  --ctp-mauve: #cba6f7;
+  --ctp-red: #f38ba8;
+  --ctp-maroon: #eba0ac;
+  --ctp-peach: #fab387;
+  --ctp-yellow: #f9e2af;
+  --ctp-green: #a6e3a1;
+  --ctp-teal: #94e2d5;
+  --ctp-sky: #89dceb;
+  --ctp-sapphire: #74c7ec;
+  --ctp-blue: #89b4fa;
+  --ctp-lavender: #b4befe;
+  --ctp-text: #cdd6f4;
+  --ctp-subtext1: #bac2de;
+  --ctp-subtext0: #a6adc8;
+  --ctp-overlay2: #9399b2;
+  --ctp-overlay1: #7f849c;
+  --ctp-overlay0: #6c7086;
+  --ctp-surface2: #585b70;
+  --ctp-surface1: #45475a;
+  --ctp-surface0: #313244;
+  --ctp-base: #1e1e2e;
+  --ctp-mantle: #181825;
+  --ctp-crust: #11111b;
+
+  --ark-primary: rgba(205, 214, 244, 0.90);
+  --ark-primary-rgb: 205, 214, 244;
+  --ark-primary-glow: rgba(166, 227, 161, 0.42);
+  --ark-accent: #cdd6f4;
+  --ark-dark-blue: #1e1e2e;
+  --ark-border: rgba(166, 227, 161, 0.28);
+  --ark-border-rgb: 166, 227, 161;
+  --ark-text: #cdd6f4;
+  --ark-text-secondary: #a6adc8;
+  --ark-text-secondary-rgb: 166, 173, 200;
+  --ark-bg-dark: #181825;
+  --ark-highlight: #cdd6f4;
+  --ark-highlight-green: #a6e3a1;
+  --ark-highlight-green-rgb: 166, 227, 161;
+  --ark-highlight-pink: #cba6f7;
+  --ark-secondary-rgb: 49, 50, 68;
+  --ark-secondary-inverted-rgb: 204, 208, 218;
 
   // --- 响应式布局变量 ---
   --font-size-base: clamp(13px, 0.5vw + 11px, 18px);
@@ -107,7 +135,7 @@ body {
   padding: 0;
   margin: 0;
   font-family: var(--font-hud);
-  background-color: #080b10;
+  background-color: #11111b;
   color: var(--ark-text);
   /* 新增: 隐藏 body 滚动条 */
   overflow: hidden; /* 隐藏所有溢出 */

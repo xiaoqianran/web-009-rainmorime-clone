@@ -547,6 +547,26 @@
   pointer-events: auto; // 允许容器内的元素响应事件
 }
 
+.leverHint {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: 6px;
+  font-family: var(--font-hud), 'Dosis', sans-serif;
+  font-size: 0.55rem;
+  letter-spacing: 0.28em;
+  color: rgba(var(--ark-highlight-green-rgb), 0.62);
+  pointer-events: none;
+  white-space: nowrap;
+  animation: leverHintPulse 2.4s ease-in-out infinite;
+}
+
+@keyframes leverHintPulse {
+  0%, 100% { opacity: 0.35; }
+  50% { opacity: 0.9; }
+}
+
 
 
 
@@ -1233,12 +1253,12 @@
       background: linear-gradient(
         90deg,
         transparent 0%,
-        rgba(178, 242, 187, 0.02) 15%,
-        rgba(178, 242, 187, 0.06) 35%,
-        rgba(178, 242, 187, 0.15) 55%,
-        rgba(178, 242, 187, 0.4) 78%,
+        rgba(166, 227, 161, 0.02) 15%,
+        rgba(166, 227, 161, 0.06) 35%,
+        rgba(166, 227, 161, 0.15) 55%,
+        rgba(166, 227, 161, 0.4) 78%,
         var(--ark-highlight-green) 95%,
-        rgba(178, 242, 187, 0.6) 100%
+        rgba(166, 227, 161, 0.6) 100%
       );
       filter: drop-shadow(0 0 3px var(--ark-highlight-green));
       animation: scanBottomBar 4s cubic-bezier(0.25, 0.8, 0.25, 1) infinite;
@@ -1280,7 +1300,7 @@
 
   &:active {
     transform: scale(0.92);
-    background: rgba(178, 242, 187, 0.08);
+    background: rgba(166, 227, 161, 0.08);
     color: var(--ark-highlight-green);
     text-shadow: 0 0 8px var(--ark-highlight-green);
   }

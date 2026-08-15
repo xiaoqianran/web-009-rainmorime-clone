@@ -16,22 +16,24 @@
 
 // 负色 (Inverted) 效果
 .inverted {
-  // 覆盖 CSS 变量以应用粉紫色主题
-  --ark-primary: #E08FFF; 
-  --ark-primary-rgb: 224, 143, 255;
-  --ark-highlight-green: #E08FFF; 
-  --ark-highlight-green-rgb: 224, 143, 255;
-  
-  // 手动模拟反转核心颜色
-  --ark-dark-blue: #f0f0f0; // 浅灰色背景
-  --ark-text: #222222;     // 深灰色文字
-  --ark-border: rgba(0, 0, 0, 0.3); // 深色透明边框
-  --ark-border-rgb: 0, 0, 0;
-  --ark-text-secondary: #555555;
-  --ark-text-secondary-rgb: 85, 85, 85;
-  --ark-secondary-rgb: 236, 228, 242;
-  --ark-secondary-inverted-rgb: 236, 228, 242;
-  --ark-highlight-pink: #e08fff;
+  /* Catppuccin Latte — light invert of Mocha */
+  --ark-primary: #4c4f69;
+  --ark-primary-rgb: 76, 79, 105;
+  --ark-highlight-green: #8839ef;
+  --ark-highlight-green-rgb: 136, 57, 239;
+  --ark-dark-blue: #eff1f5;
+  --ark-text: #4c4f69;
+  --ark-border: rgba(76, 79, 105, 0.28);
+  --ark-border-rgb: 76, 79, 105;
+  --ark-text-secondary: #6c6f85;
+  --ark-text-secondary-rgb: 108, 111, 133;
+  --ark-secondary-rgb: 204, 208, 218;
+  --ark-secondary-inverted-rgb: 204, 208, 218;
+  --ark-highlight-pink: #ea76cb;
+  --ark-primary-glow: rgba(136, 57, 239, 0.28);
+  --ark-accent: #4c4f69;
+  --ark-bg-dark: #e6e9ef;
+  --ark-highlight: #4c4f69;
   
   // 特定元素样式覆盖
   &.container {

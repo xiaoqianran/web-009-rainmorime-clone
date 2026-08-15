@@ -933,8 +933,8 @@
   // --- MODIFY: Add gradient to the scanner --- 
   background: conic-gradient(
     from 0deg,
-    rgba(178, 242, 187, 0.6) 0deg, // Start slightly more opaque green
-    rgba(178, 242, 187, 0.1) 30deg, // Fade to less opaque green at the end of sector
+    rgba(166, 227, 161, 0.6) 0deg, // Start slightly more opaque green
+    rgba(166, 227, 161, 0.1) 30deg, // Fade to less opaque green at the end of sector
     transparent 30.1deg 360deg
   );
   animation: rotateScanner 4s linear infinite;
@@ -951,8 +951,8 @@
   width: 20px; // 初始大小
   height: 20px;
   border-radius: 50%;
-  border: 1px solid rgba(178, 242, 187, 0.9); // 使用 Contact 列悬停的绿色 (178, 242, 187)
-  box-shadow: 0 0 0 0px rgba(178, 242, 187, 0.5); // 使用 Contact 列悬停的阴影
+  border: 1px solid rgba(166, 227, 161, 0.9); // 使用 Contact 列悬停的绿色 (166, 227, 161)
+  box-shadow: 0 0 0 0px rgba(166, 227, 161, 0.5); // 使用 Contact 列悬停的阴影
   opacity: 0;
   pointer-events: none;
   transform: translate(-50%, -50%) scale(0.1);
@@ -1030,8 +1030,8 @@
   width: 20px; 
   height: 20px;
   border-radius: 50%;
-  border: 2px solid rgba(178, 242, 187, 1); // Thicker, opaque border
-  box-shadow: 0 0 3px 1px rgba(178, 242, 187, 0.6); // Add initial shadow
+  border: 2px solid rgba(166, 227, 161, 1); // Thicker, opaque border
+  box-shadow: 0 0 3px 1px rgba(166, 227, 161, 0.6); // Add initial shadow
   opacity: 1; // Start fully opaque
   pointer-events: none;
   z-index: -1; // Place behind icon container

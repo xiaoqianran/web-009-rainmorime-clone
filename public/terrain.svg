@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800" fill="none">
   <!-- Contour lines -->
-  <g stroke="#b2f2bb" stroke-width="0.8" opacity="0.25">
+  <g stroke="#a6e3a1" stroke-width="0.8" opacity="0.25">
     <ellipse cx="750" cy="400" rx="320" ry="220"/>
     <ellipse cx="750" cy="400" rx="280" ry="190"/>
     <ellipse cx="755" cy="395" rx="230" ry="155"/>
@@ -26,7 +26,7 @@
     <ellipse cx="613" cy="712" rx="70" ry="26"/>
   </g>
   <!-- Grid -->
-  <g stroke="#b2f2bb" stroke-width="0.3" opacity="0.12">
+  <g stroke="#a6e3a1" stroke-width="0.3" opacity="0.12">
     <line x1="0" y1="100" x2="1200" y2="100"/><line x1="0" y1="200" x2="1200" y2="200"/>
     <line x1="0" y1="300" x2="1200" y2="300"/><line x1="0" y1="400" x2="1200" y2="400"/>
     <line x1="0" y1="500" x2="1200" y2="500"/><line x1="0" y1="600" x2="1200" y2="600"/>
@@ -37,7 +37,7 @@
     <line x1="1050" y1="0" x2="1050" y2="800"/>
   </g>
   <!-- Elevation labels -->
-  <g fill="#b2f2bb" font-family="monospace" font-size="9" opacity="0.18">
+  <g fill="#a6e3a1" font-family="monospace" font-size="9" opacity="0.18">
     <text x="770" y="378">2400m</text>
     <text x="266" y="203">1800m</text>
     <text x="213" y="635">1200m</text>

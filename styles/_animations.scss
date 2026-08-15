@@ -187,7 +187,7 @@
     height: 80%;
     border-color: var(--ark-highlight-green);
     opacity: 1;
-    box-shadow: 0 0 8px rgba(178, 242, 187, 0.4); // Add glow at the end
+    box-shadow: 0 0 8px rgba(166, 227, 161, 0.4); // Add glow at the end
   }
 }
 
@@ -247,7 +247,7 @@
                 inset -10px 10px 0 -8px var(--ark-highlight-green),
                 inset 10px -10px 0 -8px var(--ark-highlight-green),
                 inset -10px -10px 0 -8px var(--ark-highlight-green),
-                0 0 10px rgba(178, 242, 187, 0.4); // Final glow
+                0 0 10px rgba(166, 227, 161, 0.4); // Final glow
   }
 }
 
@@ -421,14 +421,14 @@
 // --- ADD: Keyframe for Smaller Ripples ---
 @keyframes contactRippleExpandShadowSmall {
   0% {
-    border: 1px solid rgba(178, 242, 187, 0.9); // 保持样式一致
-    box-shadow: 0 0 0 0px rgba(178, 242, 187, 0.5); 
+    border: 1px solid rgba(166, 227, 161, 0.9); // 保持样式一致
+    box-shadow: 0 0 0 0px rgba(166, 227, 161, 0.5); 
     opacity: 0.9;
     transform: translate(-50%, -50%) scale(0.1);
   }
   100% {
-    border: 1px solid rgba(178, 242, 187, 0); 
-    box-shadow: 0 0 0 20px rgba(178, 242, 187, 0); // 阴影范围也略小
+    border: 1px solid rgba(166, 227, 161, 0); 
+    box-shadow: 0 0 0 20px rgba(166, 227, 161, 0); // 阴影范围也略小
     opacity: 0;
     transform: translate(-50%, -50%) scale(1.2); // 修改: 减小最终缩放
   }
@@ -453,15 +453,15 @@
 @keyframes contactRippleExpandShadow {
   0% {
     // --- MODIFY: Make start more prominent and brighter ---
-    border: 2px solid rgba(178, 242, 187, 1); // Keep border
-    box-shadow: 0 0 6px 2px rgba(178, 242, 187, 0.9); // Increase shadow size, spread, and opacity
+    border: 2px solid rgba(166, 227, 161, 1); // Keep border
+    box-shadow: 0 0 6px 2px rgba(166, 227, 161, 0.9); // Increase shadow size, spread, and opacity
     opacity: 1; // Keep fully opaque
     transform: translate(-50%, -50%) scale(0.1);
   }
   100% {
     // --- Keep end state the same --- 
-    border: 1px solid rgba(178, 242, 187, 0); 
-    box-shadow: 0 0 0 25px rgba(178, 242, 187, 0); // Keep shadow removed at end if intended
+    border: 1px solid rgba(166, 227, 161, 0); 
+    box-shadow: 0 0 0 25px rgba(166, 227, 161, 0); // Keep shadow removed at end if intended
     opacity: 0;
     transform: translate(-50%, -50%) scale(2.2); // Expand even larger
   }

@@ -25,11 +25,15 @@ const ActivationLever = ({
   isActive,
   iconType,
   isAnimated,
+  cursorLabel,
+  ariaLabel,
 }: {
   onActivate: () => void;
   isActive: boolean;
   iconType?: 'discharge' | 'drain';
   isAnimated?: boolean;
+  cursorLabel?: string;
+  ariaLabel?: string;
 }) => {
   const [dragY, setDragY] = useState<number | null>(null);
   const draggingRef = useRef(false);
@@ -89,9 +93,20 @@ const ActivationLever = ({
   };
 
   const handleClick = (e: React.MouseEvent) => {
-    // Plain click does nothing — activation is drag-down only.
     e.preventDefault();
     e.stopPropagation();
+    if (isActive || draggingRef.current) return;
+    // Nudge the handle so a click teaches "drag down" instead of feeling broken.
+    setDragY(REST_Y + 14);
+    window.setTimeout(() => setDragY(null), 280);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (isActive) return;
+    if (e.key === 'Enter' || e.key === ' ' || e.key === 'ArrowDown') {
+      e.preventDefault();
+      onActivate();
+    }
   };
 
   const IconComponent = icons[iconType] || null;
@@ -107,6 +122,11 @@ const ActivationLever = ({
       onPointerDown={handlePointerDown}
       onLostPointerCapture={endDrag}
       onClick={handleClick}
+      onKeyDown={handleKeyDown}
+      role="button"
+      tabIndex={0}
+      aria-label={ariaLabel || (iconType === 'drain' ? '向下拖动放电' : '向下拖动充电')}
+      data-cursor-label={cursorLabel || 'DRAG DOWN'}
       data-cursor-magnetic
       style={{ touchAction: 'none' }}
     >

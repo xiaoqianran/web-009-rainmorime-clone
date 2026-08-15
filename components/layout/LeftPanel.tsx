@@ -85,6 +85,8 @@ export default function LeftPanel({
             isActive={isTesseractActivated}
             iconType="discharge"
             isAnimated={leversVisible}
+            cursorLabel="DRAG TO CHARGE"
+            ariaLabel="向下拖动充电"
           />
         )}
         {mainVisible && (
@@ -93,7 +95,12 @@ export default function LeftPanel({
             isActive={isDischarging}
             iconType="drain"
             isAnimated={leversVisible}
+            cursorLabel={powerLevel === 100 ? 'DRAG TO RESET' : 'NEED 100%'}
+            ariaLabel={powerLevel === 100 ? '向下拖动复位负色' : '电量满 100% 后才能放电'}
           />
+        )}
+        {mainVisible && leversVisible && (
+          <span className={styles.leverHint} aria-hidden="true">DRAG ↓</span>
         )}
       </div>
     <button
