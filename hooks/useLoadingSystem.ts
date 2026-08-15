@@ -138,10 +138,17 @@ export const useLoadingSystem = (startLogging: boolean = true) => {
     return () => clearTimeout(id);
   }, [showSplitLines]);
 
+  const skipLoading = useCallback(() => {
+    setProgress(100);
+    generateLogLine(100);
+    setShowSplitLines(true);
+  }, [generateLogLine]);
+
   return {
     progress,
     logLines,
     showSplitLines,
-    loading
+    loading,
+    skipLoading,
   };
 };

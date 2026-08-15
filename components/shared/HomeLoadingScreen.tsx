@@ -10,7 +10,7 @@ import SplitTransition, { SplitTransitionRef } from './LoadingScreen/SplitTransi
 const HomeLoadingScreen = ({ onComplete }: { onComplete: () => void }) => {
   const [visible, setVisible] = useState(true);
   const [startLogging, setStartLogging] = useState(false);
-  const { progress, logLines, showSplitLines, loading } = useLoadingSystem(startLogging);
+  const { progress, logLines, showSplitLines, loading, skipLoading } = useLoadingSystem(startLogging);
   
   const onCompleteRef = useRef(onComplete);
   onCompleteRef.current = onComplete;
@@ -46,6 +46,7 @@ const HomeLoadingScreen = ({ onComplete }: { onComplete: () => void }) => {
       if (consoleRef.current?.container) gsap.set(consoleRef.current.container, { opacity: 1 });
       gsap.set(progressAreaRef.current, { opacity: 1, y: 0 });
       logoRef.current?.animateIn(0);
+      setStartLogging(true);
       return () => {};
     }
 
@@ -78,6 +79,34 @@ const HomeLoadingScreen = ({ onComplete }: { onComplete: () => void }) => {
       timelines.forEach(tl => tl.kill());
     };
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Failsafe: if GSAP never reaches 4s (tab frozen / reduced-motion edge), start anyway
+  useEffect(() => {
+    const id = setTimeout(() => setStartLogging(true), 2500);
+    return () => clearTimeout(id);
+  }, []);
+
+  // Click / scroll / key skips the boot sequence (same as live site)
+  useEffect(() => {
+    if (!visible || !loading) return;
+    const skip = () => {
+      setStartLogging(true);
+      skipLoading();
+    };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' || e.key === 'Enter' || e.key === ' ') skip();
+    };
+    window.addEventListener('click', skip, { once: true });
+    window.addEventListener('wheel', skip, { once: true, passive: true });
+    window.addEventListener('touchstart', skip, { once: true, passive: true });
+    window.addEventListener('keydown', onKey);
+    return () => {
+      window.removeEventListener('click', skip);
+      window.removeEventListener('wheel', skip);
+      window.removeEventListener('touchstart', skip);
+      window.removeEventListener('keydown', onKey);
+    };
+  }, [visible, loading, skipLoading]);
 
   // ===================== Split lines animation =====================
   useEffect(() => {
