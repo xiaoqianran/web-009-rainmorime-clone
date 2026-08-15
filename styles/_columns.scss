@@ -78,7 +78,7 @@
 .column {
   position: absolute;
   height: 100%;
-  width: 16%;
+  width: 14.2857%;
   cursor: none;
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
   z-index: 10;
@@ -124,11 +124,12 @@
 
 // 桌面端列定位（从 inline style 迁移到 CSS）
 .column0 { left: 0%; }
-.column1 { left: 16%; }
-.column2 { left: 32%; }
-.column3 { left: 48%; }
-.column4 { left: 64%; }
-.column5 { left: 80%; }
+.column1 { left: 14.2857%; }
+.column2 { left: 28.5714%; }
+.column3 { left: 42.8571%; }
+.column4 { left: 57.1428%; }
+.column5 { left: 71.4285%; }
+.column6 { left: 85.7142%; }
 
 // 垂直线条
 .verticalLine {

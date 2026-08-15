@@ -22,6 +22,10 @@ export default function Home() {
 
   const handleColumnClick = (columnIndex: number) => {
     if (!animationsComplete) return;
+    if (columnIndex === 6) {
+      navigateTo("/friends");
+      return;
+    }
 
     const sectionHashes = ['works', 'experience', 'blog', 'life', 'contact', 'about'];
     if (columnIndex < sectionHashes.length) {

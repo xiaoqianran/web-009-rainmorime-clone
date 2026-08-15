@@ -17,7 +17,7 @@ export default function useColumnHover(): ColumnHoverState {
 
   const updateRandomHudTexts = () => {
     const newTexts = [];
-    for (let i = 0; i < 6; i++) {
+    for (let i = 0; i < 7; i++) {
       const randomNum = Math.floor(Math.random() * 99) + 1;
       const numStr = String(randomNum).padStart(2, '0');
       newTexts.push(`DATA-Ø${numStr}`);

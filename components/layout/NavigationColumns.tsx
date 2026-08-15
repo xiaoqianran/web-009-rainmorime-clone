@@ -5,7 +5,7 @@ import VerticalShinyText from '../shared/VerticalShinyText';
 import ActivationLever from '../interactive/ActivationLever';
 import { useApp } from '../../contexts/AppContext';
 
-const sectionNames = ["PORTFOLIO", "EXPERIENCE", "BLOG", "LIFE", "CONTACT", "ABOUT"];
+const sectionNames = ["PORTFOLIO", "EXPERIENCE", "BLOG", "LIFE", "CONTACT", "ABOUT", "FRIENDS"];
 
 export default function NavigationColumns({
   activeSection,
@@ -124,8 +124,8 @@ export default function NavigationColumns({
         </div>
 
         {/* Vertical lines */}
-        {[...Array(7)].map((_, index) => {
-          const lineLeftPercentage = index * 16;
+        {[...Array(8)].map((_, index) => {
+          const lineLeftPercentage = index * (100 / 7);
           const isPulsingNormal = pulsingNormalIndices?.includes(index);
           const isPulsingReverse = pulsingReverseIndices?.includes(index);
           return (
@@ -144,7 +144,7 @@ export default function NavigationColumns({
 
         {/* Navigation columns */}
         {sectionNames.map((name, index) => {
-          const columnPercentage = index * 16;
+          const columnPercentage = index * (100 / 7);
           const hudText = randomHudTexts[index + 1] || `DATA-Ø0${index + 1}`;
 
           const tasks = Array.from({ length: 30 }, (_, i) => {
