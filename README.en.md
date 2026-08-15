@@ -106,7 +106,7 @@ Includes built-in SSE real-time stats (visitor count + online users + uptime) wi
 
 ## Tech Stack
 
-Next.js 14 · TypeScript · SCSS Modules · CSS @keyframes · Framer Motion · GSAP · Three.js · MDX · Node.js SSE
+Next.js 16.3.1 · React 19.2 · TypeScript 7 · SCSS Modules · GSAP 3.15 · Three.js 0.185 + R3F 9 · MDX
 
 ## Project Structure
 

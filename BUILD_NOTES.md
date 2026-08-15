@@ -29,3 +29,23 @@
 - Mini-game (/game) styles come from recovered Game.module.scss; some animation names may differ from production hashes.
 - No Umami. No custom Node server.js in production.
 - Favicon is avatar.jpg (live favicon.ico was 404).
+
+## Stack upgrade (2026-08-15)
+
+Refreshed the existing clone to the newest compatible libraries. Pages router and GitHub Pages static export kept (`output: 'export'`, `images.unoptimized`, `trailingSlash`, `basePath`/`assetPrefix` `/web-009-rainmorime-clone`). Loading-screen skip/0% patch (7fa762b) left intact.
+
+- next 16.3.1, react/react-dom 19.2.8, typescript 7.0.2, sass 1.102.0, gsap 3.15.0
+- three 0.185.1 + @types/three 0.185.4, @react-three/fiber 9.7.0, @react-three/drei 10.7.8
+- next-mdx-remote 6.0.0, gray-matter 4.0.3, reading-time 1.5.0, clsx 2.1.1, react-copy-to-clipboard 5.1.1
+- @next/bundle-analyzer bumped to 16.3.1 (unused in next.config.js)
+- dotenv 17.4.2; engines.node set to >=20.9.0
+- next.config.js: dropped removed `swcMinify`
+- tsconfig: TypeScript 7 removed `target: es5` and `baseUrl`; now `target: ES2017`, relative `paths`, `jsx: react-jsx`
+
+### Could not take to a newer major
+
+- **@react-three/cannon** remains **6.6.0** — that is the latest published release. The package is unmaintained (peers: react>=18, fiber>=8). It still installs and the production build succeeds with fiber 9 / React 19. TesseractExperience keeps using `Physics` / `usePlane` / `useBox`. Successor would be @react-three/rapier (not swapped in this pass).
+- **cannon-es** remains **0.20.0** (latest).
+- **next-mdx-remote**, **gray-matter**, **reading-time**, **clsx** were already at latest.
+- Sass `@import` in `styles/Home.module.scss` emits Dart Sass 3.0 deprecation warnings. Not migrated to `@use` in this pass.
+- Transitive `camera-controls@3.1.2` (via drei) wants Node >=22; Next 16 only requires Node 20.9+. Warning only; CI stays on Node 20.

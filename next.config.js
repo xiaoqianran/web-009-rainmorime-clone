@@ -7,7 +7,6 @@ const nextConfig = {
   basePath: BASE_PATH,
   assetPrefix: BASE_PATH,
   reactStrictMode: true,
-  swcMinify: true,
   images: {
     unoptimized: true,
     remotePatterns: [
