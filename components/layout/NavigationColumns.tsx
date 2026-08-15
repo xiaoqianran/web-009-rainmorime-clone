@@ -2,7 +2,6 @@ import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import styles from '../../styles/Home.module.scss';
 import VerticalShinyText from '../shared/VerticalShinyText';
-import ActivationLever from '../interactive/ActivationLever';
 import { useApp } from '../../contexts/AppContext';
 
 const sectionNames = ["PORTFOLIO", "EXPERIENCE", "BLOG", "LIFE", "CONTACT", "ABOUT", "FRIENDS"];
@@ -26,9 +25,7 @@ export default function NavigationColumns({
   handleColumnMouseLeave,
 }) {
   const {
-    handleActivateTesseract, isTesseractActivated,
-    handleDischargeLeverPull, isDischarging,
-    leversVisible, mainVisible, powerLevel,
+    mainVisible, powerLevel,
     displayedFateText, isFateTypingActive,
   } = useApp();
 
@@ -91,24 +88,7 @@ export default function NavigationColumns({
               </div>
               <span className={styles.powerText}>{powerLevel}%</span>
             </div>
-            <div className={styles.mobilePanelLevers}>
-              {mainVisible && (
-                <>
-                  <ActivationLever
-                    onActivate={handleActivateTesseract}
-                    isActive={isTesseractActivated}
-                    iconType="discharge"
-                    isAnimated={leversVisible}
-                  />
-                  <ActivationLever
-                    onActivate={handleDischargeLeverPull}
-                    isActive={isDischarging}
-                    iconType="drain"
-                    isAnimated={leversVisible}
-                  />
-                </>
-              )}
-            </div>
+            <div className={styles.mobilePanelLevers} />
           </div>
 
           {/* RM Logo — 弹性填充中央区域 */}
@@ -155,8 +135,8 @@ export default function NavigationColumns({
           return (
             <div
               key={name}
-              className={`${styles.column} ${styles['column' + index]} ${!animationsComplete ? styles.nonInteractive : ''}`}
-              onClick={animationsComplete ? () => handleColumnClick(index) : null}
+              className={`${styles.column} ${styles['column' + index]} ${!textVisible ? styles.nonInteractive : ''}`}
+              onClick={(textVisible || mainVisible) ? () => handleColumnClick(index) : undefined}
               onMouseEnter={() => handleColumnMouseEnter(index)}
               onMouseLeave={() => handleColumnMouseLeave(index)}
             >

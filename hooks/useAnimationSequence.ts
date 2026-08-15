@@ -37,7 +37,7 @@ export default function useAnimationSequence(): AnimationSequenceState {
       setTimeout(() => { setLinesAnimated(true); }, 1000);
       setTimeout(() => { setHudVisible(true); }, 2200);
       setTimeout(() => { setTextVisible(true); }, 2500);
-      setTimeout(() => { setAnimationsComplete(true); }, 4200);
+      setTimeout(() => { setAnimationsComplete(true); }, 800);
     }
   };
 
@@ -58,7 +58,7 @@ export default function useAnimationSequence(): AnimationSequenceState {
 
         const indices = [];
         while (indices.length < 3) {
-          const randomIndex = Math.floor(Math.random() * 6);
+          const randomIndex = Math.floor(Math.random() * 7);
           if (!indices.includes(randomIndex)) {
             indices.push(randomIndex);
           }

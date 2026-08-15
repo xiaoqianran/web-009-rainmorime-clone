@@ -138,25 +138,14 @@ export default function MainLayout({ children }) {
 
   const handleLeftNavLinkClick = (link: { label: string; hash: string }) => {
     closeDrawer();
+    const target = `/content#${link.hash}`;
 
-    if (isContentPage) {
-      if (isDetailOpen()) {
-        handleBack();
-        setTimeout(() => {
-          const el = document.getElementById(`section-${link.hash}`);
-          if (el) {
-            el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-          }
-        }, 1900);
-      } else {
-        const el = document.getElementById(`section-${link.hash}`);
-        if (el) {
-          el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-      }
-    } else {
-      navigateTo(`/content#${link.hash}`);
+    if (isContentPage && isDetailOpen()) {
+      handleBack();
+      setTimeout(() => navigateTo(target), 1900);
+      return;
     }
+    navigateTo(target);
   };
 
   const handleFriendsClick = useCallback(() => {

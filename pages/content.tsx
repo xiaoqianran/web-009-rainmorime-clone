@@ -23,6 +23,7 @@ import { experienceData } from '../data/experience';
 import { gameData, travelData, otherData } from '../data/life';
 import { getAllPosts } from '../lib/blog';
 import type { BlogPostMeta } from '../types';
+import { scrollToSection, scrollToSectionWithRetry } from '../lib/scrollToSection';
 
 const useIsomorphicLayoutEffect =
   typeof window !== 'undefined' ? useLayoutEffect : useEffect;
@@ -83,17 +84,22 @@ export default function ContentPage({ blogPosts }: ContentPageProps) {
 
   const isDetailMounted = detail.type !== 'none';
 
-  // --- Hash-based instant scroll before first paint ---
+  // --- Hash scroll: mount + hashchange + post-transition retries ---
   useIsomorphicLayoutEffect(() => {
-    const hash = window.location.hash.replace('#', '');
-    if (!hash) return;
-
-    const el = document.getElementById(`section-${hash}`);
-    const container = scrollContainerRef.current;
-    if (el && container) {
-      container.scrollTop = el.offsetTop;
-    }
+    const run = () => {
+      const hash = window.location.hash.replace('#', '');
+      if (hash) scrollToSection(hash);
+    };
+    run();
+    scrollToSectionWithRetry(window.location.hash.replace('#', ''));
+    window.addEventListener('hashchange', run);
+    return () => window.removeEventListener('hashchange', run);
   }, []);
+
+  useEffect(() => {
+    const hash = (router.asPath.split('#')[1] || '').split('?')[0];
+    if (hash) scrollToSectionWithRetry(hash);
+  }, [router.asPath]);
 
   // Clean up back override when unmounting
   useEffect(() => {

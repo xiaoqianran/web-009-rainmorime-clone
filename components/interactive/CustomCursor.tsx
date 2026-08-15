@@ -20,6 +20,7 @@ const CustomCursor = () => {
   const snapTarget = useRef<{ x: number; y: number; w: number; h: number } | null>(null);
   const currentLabel = useRef('');
   const hoverEl = useRef<HTMLElement | null>(null);
+  const reducedMotion = useRef(false);
 
   const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 
@@ -44,9 +45,14 @@ const CustomCursor = () => {
       ty = target.y;
     }
 
-    const speed = isHovering.current ? 0.15 : 0.25;
-    rendered.current.x = lerp(rendered.current.x, tx, speed);
-    rendered.current.y = lerp(rendered.current.y, ty, speed);
+    if (reducedMotion.current) {
+      rendered.current.x = tx;
+      rendered.current.y = ty;
+    } else {
+      const speed = isHovering.current ? 0.15 : 0.25;
+      rendered.current.x = lerp(rendered.current.x, tx, speed);
+      rendered.current.y = lerp(rendered.current.y, ty, speed);
+    }
 
     applyPosition(rendered.current.x, rendered.current.y);
 
@@ -90,6 +96,24 @@ const CustomCursor = () => {
   }, [tick]);
 
   useEffect(() => {
+    const motionMq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const desktopMq = window.matchMedia('(min-width: 1024px)');
+    const syncMotion = () => { reducedMotion.current = motionMq.matches; };
+    const syncCursorClass = () => {
+      document.documentElement.classList.toggle('custom-cursor-on', desktopMq.matches);
+    };
+    syncMotion();
+    syncCursorClass();
+    motionMq.addEventListener('change', syncMotion);
+    desktopMq.addEventListener('change', syncCursorClass);
+    return () => {
+      motionMq.removeEventListener('change', syncMotion);
+      desktopMq.removeEventListener('change', syncCursorClass);
+      document.documentElement.classList.remove('custom-cursor-on');
+    };
+  }, []);
+
+  useEffect(() => {
     const onMouseMove = (e: MouseEvent) => {
       mouse.current.x = e.clientX;
       mouse.current.y = e.clientY;
@@ -113,7 +137,7 @@ const CustomCursor = () => {
         }
       });
 
-      if (closest) {
+      if (closest && !reducedMotion.current) {
         const rect = (closest as HTMLElement).getBoundingClientRect();
         const cx = rect.left + rect.width / 2;
         const cy = rect.top + rect.height / 2;

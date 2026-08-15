@@ -36,6 +36,7 @@ const ActivationLever = ({
   const startYRef = useRef(0);
   const activatedThisDragRef = useRef(false);
   const containerRef = useRef<HTMLDivElement>(null);
+  const pointerIdRef = useRef<number | null>(null);
 
   const handleY = isActive ? ACTIVE_Y : (dragY ?? REST_Y);
 
@@ -43,6 +44,12 @@ const ActivationLever = ({
     draggingRef.current = false;
     activatedThisDragRef.current = false;
     setDragY(null);
+    const id = pointerIdRef.current;
+    const node = containerRef.current;
+    if (id != null && node && node.hasPointerCapture?.(id)) {
+      try { node.releasePointerCapture(id); } catch {}
+    }
+    pointerIdRef.current = null;
   }, []);
 
   useEffect(() => {
@@ -76,8 +83,9 @@ const ActivationLever = ({
     draggingRef.current = true;
     activatedThisDragRef.current = false;
     startYRef.current = e.clientY;
+    pointerIdRef.current = e.pointerId;
     setDragY(REST_Y);
-    containerRef.current?.setPointerCapture?.(e.pointerId);
+    try { containerRef.current?.setPointerCapture(e.pointerId); } catch {}
   };
 
   const handleClick = (e: React.MouseEvent) => {
@@ -97,6 +105,7 @@ const ActivationLever = ({
         ${isAnimated ? styles.animated : ''}
       `}
       onPointerDown={handlePointerDown}
+      onLostPointerCapture={endDrag}
       onClick={handleClick}
       data-cursor-magnetic
       style={{ touchAction: 'none' }}

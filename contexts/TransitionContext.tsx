@@ -1,6 +1,7 @@
 import { createContext, useContext, useCallback, useRef, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useApp } from './AppContext';
+import { scrollToSectionWithRetry } from '../lib/scrollToSection';
 
 interface TransitionContextValue {
   navigateTo: (url: string, options?: { scroll?: boolean }) => void;
@@ -66,6 +67,25 @@ const DIAG_COLLAPSE_OPTS: KeyframeAnimationOptions = {
 const checkMobile = () =>
   typeof window !== 'undefined' && window.matchMedia('(max-width: 767px)').matches;
 
+const normalizePath = (path: string) => {
+  if (!path) return '/';
+  const trimmed = path.split('?')[0].replace(/\/$/, '');
+  return trimmed === '' ? '/' : trimmed;
+};
+
+const splitNavUrl = (url: string): { pathname: string; hash: string } => {
+  const [rawPath, rawHash = ''] = url.split('#');
+  return {
+    pathname: normalizePath(rawPath || '/'),
+    hash: rawHash.replace(/^#/, ''),
+  };
+};
+
+const toRouterDest = (pathname: string, hash?: string) => {
+  if (hash) return { pathname, hash };
+  return pathname;
+};
+
 export function TransitionProvider({ children, pageWrapperRef }: TransitionProviderProps) {
   const router = useRouter();
   const { retractColumns, expandColumns } = useApp();
@@ -74,6 +94,7 @@ export function TransitionProvider({ children, pageWrapperRef }: TransitionProvi
   const backOverrideRef = useRef<(() => void) | null>(null);
   const activeAnim = useRef<Animation | null>(null);
   const navigateToRef = useRef<((url: string, options?: { scroll?: boolean }) => void) | null>(null);
+  const navGen = useRef(0);
 
   const cancelActiveAnim = () => {
     if (activeAnim.current) {
@@ -86,7 +107,6 @@ export function TransitionProvider({ children, pageWrapperRef }: TransitionProvi
     if (queuedNav.current && navigateToRef.current) {
       const nextNav = queuedNav.current;
       queuedNav.current = null;
-      // Use setTimeout to avoid synchronous nested calls
       setTimeout(() => {
         navigateToRef.current?.(nextNav.url, nextNav.options);
       }, 0);
@@ -94,136 +114,198 @@ export function TransitionProvider({ children, pageWrapperRef }: TransitionProvi
   };
 
   const navigateTo = useCallback((url: string, options?: { scroll?: boolean }) => {
+    const { pathname: destPath, hash: destHash } = splitNavUrl(url);
+    const currentPath = normalizePath(router.pathname);
+
+    // Already on /content (or any same path): hash-only — scroll, no slide, no lock.
+    if (currentPath === destPath && destHash) {
+      router.push(toRouterDest(destPath, destHash), undefined, { scroll: false, ...options });
+      scrollToSectionWithRetry(destHash);
+      return;
+    }
+
     if (isTransitioning.current) {
-      // If returning to the same URL we are currently transitioning to, ignore.
       queuedNav.current = { url, options };
       return;
     }
 
     const wrapper = pageWrapperRef.current;
     if (!wrapper) {
-      router.push(url, undefined, { scroll: false, ...options });
+      router.push(toRouterDest(destPath, destHash || undefined), undefined, { scroll: false, ...options });
+      if (destHash) scrollToSectionWithRetry(destHash);
       return;
     }
+
+    const myGen = ++navGen.current;
+    const isStale = () => navGen.current !== myGen;
+
+    const pathNow = () => {
+      if (typeof window === 'undefined') return normalizePath(router.pathname);
+      const base = process.env.NEXT_PUBLIC_BASE_PATH || '';
+      let path = window.location.pathname;
+      if (base && path.startsWith(base)) path = path.slice(base.length) || '/';
+      return normalizePath(path);
+    };
+
+    const finishLock = () => {
+      if (isStale()) return;
+      isTransitioning.current = false;
+      if (pathNow() === '/') {
+        expandColumns();
+      }
+      processQueue();
+    };
 
     isTransitioning.current = true;
     queuedNav.current = null;
     cancelActiveAnim();
-    const currentlyHome = router.pathname === '/';
-    const goingHome = url === '/';
+    const currentlyHome = currentPath === '/';
+    const goingHome = destPath === '/';
 
-    const pushThen = (target: string, cb: () => void, pushOpts?: any) => {
-      const onComplete = () => {
+    const pushThen = (target: string, cb: () => void) => {
+      const { pathname, hash } = splitNavUrl(target);
+      let settled = false;
+      let tid = 0;
+      const settle = () => {
+        if (settled || isStale()) return;
+        settled = true;
         router.events.off('routeChangeComplete', onComplete);
+        router.events.off('routeChangeError', onError);
+        window.clearTimeout(tid);
+        if (hash) scrollToSectionWithRetry(hash);
         cb();
       };
+      const onComplete = () => settle();
+      const onError = () => settle();
       router.events.on('routeChangeComplete', onComplete);
-      router.push(target, undefined, { scroll: false, ...pushOpts });
+      router.events.on('routeChangeError', onError);
+      tid = window.setTimeout(settle, 2500);
+      router
+        .push(toRouterDest(pathname, hash || undefined), undefined, { scroll: false, ...options })
+        .catch(() => settle());
     };
 
     const wapiSlideIn = () => {
-      const anim = wrapper.animate(SLIDE_IN_KF, SLIDE_IN_OPTS);
+      if (isStale() || !pageWrapperRef.current) {
+        finishLock();
+        return;
+      }
+      const el = pageWrapperRef.current;
+      const anim = el.animate(SLIDE_IN_KF, SLIDE_IN_OPTS);
       activeAnim.current = anim;
-      anim.finished.then(() => {
-        wrapper.style.opacity = '';
-        wrapper.style.transform = '';
-        anim.cancel();
+      const done = () => {
+        if (isStale()) return;
+        el.style.opacity = '';
+        el.style.transform = '';
+        try { anim.cancel(); } catch {}
         activeAnim.current = null;
-        isTransitioning.current = false;
-        processQueue();
-      }).catch(() => {});
+        finishLock();
+      };
+      anim.finished.then(done).catch(done);
     };
 
     const mobile = checkMobile();
 
     const wapiDiagExpand = () => {
-      wrapper.style.opacity = '';
-      const anim = wrapper.animate(DIAG_EXPAND_KF, DIAG_EXPAND_OPTS);
+      if (isStale() || !pageWrapperRef.current) {
+        finishLock();
+        return;
+      }
+      const el = pageWrapperRef.current;
+      el.style.opacity = '';
+      const anim = el.animate(DIAG_EXPAND_KF, DIAG_EXPAND_OPTS);
       activeAnim.current = anim;
-      anim.finished.then(() => {
-        wrapper.style.clipPath = '';
-        wrapper.style.transform = '';
-        anim.cancel();
+      const done = () => {
+        if (isStale()) return;
+        el.style.clipPath = '';
+        el.style.transform = '';
+        try { anim.cancel(); } catch {}
         activeAnim.current = null;
-        isTransitioning.current = false;
-        processQueue();
-      }).catch(() => {});
+        finishLock();
+      };
+      anim.finished.then(done).catch(done);
     };
 
     if (currentlyHome && !goingHome) {
       if (mobile) {
-        // Mobile forward: diagonal collapse home → push → diagonal expand content
         retractColumns(() => {});
         const anim = wrapper.animate(DIAG_COLLAPSE_KF, DIAG_COLLAPSE_OPTS);
         activeAnim.current = anim;
-        anim.finished.then(() => {
-          anim.cancel();
+        const afterCollapse = () => {
+          if (isStale()) return;
+          try { anim.cancel(); } catch {}
           activeAnim.current = null;
           wrapper.style.clipPath = 'inset(100%)';
-          pushThen(url, wapiDiagExpand, options);
-        }).catch(() => {});
+          pushThen(url, wapiDiagExpand);
+        };
+        anim.finished.then(afterCollapse).catch(afterCollapse);
       } else {
-        // Desktop forward: retract columns → hide wrapper → push → slide in
         retractColumns(() => {
+          if (isStale()) return;
           wrapper.style.opacity = '0';
-          pushThen(url, wapiSlideIn, options);
+          pushThen(url, wapiSlideIn);
         });
       }
     } else if (!currentlyHome && goingHome) {
       if (mobile) {
-        // Mobile back: diagonal collapse content → push home → diagonal expand home
         const anim = wrapper.animate(DIAG_COLLAPSE_KF, DIAG_COLLAPSE_OPTS);
         activeAnim.current = anim;
-        anim.finished.then(() => {
-          anim.cancel();
+        const afterCollapse = () => {
+          if (isStale()) return;
+          try { anim.cancel(); } catch {}
           activeAnim.current = null;
           wrapper.style.clipPath = 'inset(100%)';
           pushThen('/', () => {
             expandColumns();
             wapiDiagExpand();
           });
-        }).catch(() => {});
+        };
+        anim.finished.then(afterCollapse).catch(afterCollapse);
       } else {
-        // Desktop back: slide out → push home → expand columns
         const anim = wrapper.animate(SLIDE_OUT_KF, SLIDE_OUT_OPTS);
         activeAnim.current = anim;
-        anim.finished.then(() => {
-          anim.cancel();
+        const afterOut = () => {
+          if (isStale()) return;
+          try { anim.cancel(); } catch {}
           activeAnim.current = null;
           wrapper.style.opacity = '0';
           pushThen('/', () => {
             wrapper.style.opacity = '';
             expandColumns(() => {
-              isTransitioning.current = false;
-              processQueue();
+              finishLock();
             });
           });
-        }).catch(() => {});
+        };
+        anim.finished.then(afterOut).catch(afterOut);
       }
     } else {
-      // Other: WAAPI slide out → push → WAAPI slide in
       const outAnim = wrapper.animate(SLIDE_OUT_KF, SLIDE_OUT_OPTS);
       activeAnim.current = outAnim;
-      outAnim.finished.then(() => {
-        outAnim.cancel();
+      const afterOut = () => {
+        if (isStale()) return;
+        try { outAnim.cancel(); } catch {}
         activeAnim.current = null;
         wrapper.style.opacity = '0';
-        pushThen(url, wapiSlideIn, options);
-      }).catch(() => {});
+        pushThen(url, wapiSlideIn);
+      };
+      outAnim.finished.then(afterOut).catch(afterOut);
     }
   }, [router, pageWrapperRef, retractColumns, expandColumns]);
 
-  // Keep navigateToRef updated
   useEffect(() => {
     navigateToRef.current = navigateTo;
   }, [navigateTo]);
 
-  // Handle browser back/forward navigation (popstate) that bypasses navigateTo
   useEffect(() => {
     const handleRouteChange = (url: string) => {
-      if (url === '/' && !isTransitioning.current) {
+      const base = process.env.NEXT_PUBLIC_BASE_PATH || '';
+      const pathPart = url.split('#')[0];
+      const stripped = (base && pathPart.startsWith(base)) ? (pathPart.slice(base.length) || '/') : pathPart;
+      if (normalizePath(stripped) === '/' && !isTransitioning.current) {
         expandColumns();
       }
+      const hash = url.includes('#') ? url.split('#')[1] : '';
+      if (hash) scrollToSectionWithRetry(hash);
     };
     router.events.on('routeChangeComplete', handleRouteChange);
     return () => {

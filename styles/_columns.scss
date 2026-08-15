@@ -117,7 +117,8 @@
   }
 
   &.nonInteractive {
-    pointer-events: none;
+    /* Visual-only lock: hover CSS still uses :not(.nonInteractive).
+       Pointer events stay on so column clicks work once columns are on screen. */
     cursor: default;
   }
 }

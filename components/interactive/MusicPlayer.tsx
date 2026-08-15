@@ -88,6 +88,10 @@ const MusicPlayer = ({ powerLevel }: { powerLevel: number }) => {
   const dragCurrentXRef = useRef(0); // 实时存储拖动过程中的 X 坐标 (用于 mouseup/leave 事件)
   const handleRef = useRef(null); // 播放器抽屉把手元素引用 (用于播放状态指示动画)
   const animationTimeouts = useRef([]); // 存储把手动画的 setTimeout ID (用于随机化动画)
+  const failStreakRef = useRef(0);
+  const progressContainerRef = useRef(null);
+  const didVinylDragRef = useRef(false);
+  const volumeDragRef = useRef({ active: false, startY: 0, startVol: 0.7, moved: false });
 
   // 组件挂载时设置默认音量
   useEffect(() => {
@@ -113,7 +117,7 @@ const MusicPlayer = ({ powerLevel }: { powerLevel: number }) => {
 
   // 切换播放/暂停状态 (主要通过 audio 事件更新 isPlaying)
   const togglePlay = (e) => {
-    e.stopPropagation(); // 防止事件冒泡 (例如点击唱臂区域时)
+    e?.stopPropagation?.();
     const audio = audioRef.current;
     if (!audio) return;
 
@@ -154,11 +158,62 @@ const MusicPlayer = ({ powerLevel }: { powerLevel: number }) => {
     setIsPlaylistVisible(!isPlaylistVisible);
   };
 
+  const seekFromClientX = (clientX: number) => {
+    const audio = audioRef.current;
+    const bar = progressContainerRef.current;
+    if (!audio || !bar || !duration || !Number.isFinite(duration)) return;
+    const rect = bar.getBoundingClientRect();
+    const ratio = Math.min(1, Math.max(0, (clientX - rect.left) / rect.width));
+    audio.currentTime = ratio * duration;
+  };
+
+  const handleProgressPointerDown = (e) => {
+    e.stopPropagation();
+    e.preventDefault();
+    seekFromClientX(e.clientX);
+    const onMove = (ev: PointerEvent) => seekFromClientX(ev.clientX);
+    const onUp = () => {
+      window.removeEventListener('pointermove', onMove);
+      window.removeEventListener('pointerup', onUp);
+    };
+    window.addEventListener('pointermove', onMove);
+    window.addEventListener('pointerup', onUp);
+  };
+
+  const handleVolumePointerDown = (e) => {
+    e.stopPropagation();
+    volumeDragRef.current = {
+      active: true,
+      startY: e.clientY,
+      startVol: audioRef.current?.volume ?? 0.7,
+      moved: false,
+    };
+    try { e.currentTarget.setPointerCapture?.(e.pointerId); } catch {}
+  };
+
+  const handleVolumePointerMove = (e) => {
+    const d = volumeDragRef.current;
+    if (!d.active) return;
+    const dy = e.clientY - d.startY;
+    if (Math.abs(dy) > 8) d.moved = true;
+    if (d.moved && audioRef.current) {
+      audioRef.current.volume = Math.min(1, Math.max(0, d.startVol - dy / 140));
+    }
+  };
+
+  const handleVolumePointerUp = (e) => {
+    const moved = volumeDragRef.current.moved;
+    volumeDragRef.current.active = false;
+    volumeDragRef.current.moved = false;
+    if (!moved) toggleDrawer();
+  };
+
   // 唱片拖动开始 (鼠标/触控)
   const startDrag = (clientX: number) => {
     setIsDragging(true);
     setDragStartX(clientX);
     dragCurrentXRef.current = clientX;
+    didVinylDragRef.current = false;
     if (vinylContainerRef.current) {
       vinylContainerRef.current.querySelectorAll(`.${styles.vinylRecord}`).forEach(el => {
         (el as HTMLElement).style.transition = 'none';
@@ -168,6 +223,7 @@ const MusicPlayer = ({ powerLevel }: { powerLevel: number }) => {
 
   const handleMouseDown = (e) => {
     if (e.button !== 0) return;
+    if (e.target?.closest?.('.' + styles.tonearmHitbox)) return;
     startDrag(e.clientX);
     e.preventDefault();
   };
@@ -182,6 +238,7 @@ const MusicPlayer = ({ powerLevel }: { powerLevel: number }) => {
     if (!isDragging) return;
     dragCurrentXRef.current = clientX;
     const offsetX = dragCurrentXRef.current - dragStartX;
+    if (Math.abs(offsetX) > 6) didVinylDragRef.current = true;
     setDragOffsetX(offsetX); // 更新当前唱片的视觉偏移
 
     // 根据拖动方向和距离，判断是否预显示上一首/下一首唱片
@@ -226,6 +283,9 @@ const MusicPlayer = ({ powerLevel }: { powerLevel: number }) => {
     } else { // 未超过阈值，弹回原位
       setDragOffsetX(0);
       setIncomingTrackIndex(-1);
+      if (!didVinylDragRef.current) {
+        togglePlay(e);
+      }
     }
     // 重置拖动起始点
     setDragStartX(0);
@@ -295,8 +355,17 @@ const MusicPlayer = ({ powerLevel }: { powerLevel: number }) => {
       setDuration(audio.duration);
       setCurrentTime(audio.currentTime);
     };
-    const setAudioPlaying = () => setIsPlaying(true); // 音频开始播放
-    const setAudioPaused = () => setIsPlaying(false);  // 音频暂停
+    const setAudioPlaying = () => {
+      failStreakRef.current = 0;
+      setIsPlaying(true);
+    };
+    const setAudioPaused = () => setIsPlaying(false);
+    const handleAudioError = () => {
+      setIsPlaying(false);
+      if (failStreakRef.current >= playlist.length) return;
+      failStreakRef.current += 1;
+      setCurrentTrackIndex((prev) => (prev + 1) % playlist.length);
+    };
     const handleEnded = () => { // 音频播放结束，自动播放下一首
         handleNext(); // 更新歌曲索引
         // handleNext 会触发上面的 useEffect 来加载并可能播放新歌，这里可选择是否强制播放
@@ -320,6 +389,7 @@ const MusicPlayer = ({ powerLevel }: { powerLevel: number }) => {
     audio.addEventListener('play', setAudioPlaying);
     audio.addEventListener('pause', setAudioPaused);
     audio.addEventListener('ended', handleEnded);
+    audio.addEventListener('error', handleAudioError);
 
     return () => { // 清理所有 Audio 事件监听器
       audio.removeEventListener('timeupdate', updateProgress);
@@ -327,6 +397,7 @@ const MusicPlayer = ({ powerLevel }: { powerLevel: number }) => {
       audio.removeEventListener('play', setAudioPlaying);
       audio.removeEventListener('pause', setAudioPaused);
       audio.removeEventListener('ended', handleEnded);
+      audio.removeEventListener('error', handleAudioError);
     };
   }, [duration]); // 依赖 duration (当 duration 变化时，可能需要重新计算进度)
 
@@ -391,7 +462,10 @@ const MusicPlayer = ({ powerLevel }: { powerLevel: number }) => {
           ${!isOpen && isPlaying ? styles.expanded : ''} 
           ${isPlaying ? styles.playing : ''}
         `}
-        onClick={toggleDrawer}
+        onPointerDown={handleVolumePointerDown}
+        onPointerMove={handleVolumePointerMove}
+        onPointerUp={handleVolumePointerUp}
+        onPointerCancel={handleVolumePointerUp}
         data-cursor-magnetic
       >
         {/* 动画线条容器 */}
@@ -471,7 +545,11 @@ const MusicPlayer = ({ powerLevel }: { powerLevel: number }) => {
             {[...Array(3)].map((_, i) => <span key={i} className={styles.toggleButtonLine}></span>)}
           </button>
         </div>
-        <div className={styles.progressBarContainer}> {/* 播放进度条 */}
+        <div
+          ref={progressContainerRef}
+          className={styles.progressBarContainer}
+          onPointerDown={handleProgressPointerDown}
+        >
           <div ref={progressBarRef} className={styles.progressBar}></div>
         </div>
       </div>

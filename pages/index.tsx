@@ -11,7 +11,7 @@ export default function Home() {
   const { navigateTo } = useTransition();
   const {
     linesAnimated, pulsingNormalIndices, pulsingReverseIndices,
-    textVisible, animationsComplete, isInverted, columnPhase,
+    textVisible, animationsComplete, isInverted, columnPhase, mainVisible,
     randomHudTexts, branchText1, branchText2, branchText3, branchText4,
     handleColumnMouseEnter, handleColumnMouseLeave,
   } = useApp();
@@ -21,7 +21,8 @@ export default function Home() {
   }, [router]);
 
   const handleColumnClick = (columnIndex: number) => {
-    if (!animationsComplete) return;
+    if (!textVisible && !mainVisible) return;
+    if (columnPhase === 'retracting') return;
     if (columnIndex === 6) {
       navigateTo("/friends");
       return;
