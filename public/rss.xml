@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+  xmlns:atom="http://www.w3.org/2005/Atom"
+  xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>RAINMORIME</title>
+    <link>https://xiaoqianran.github.io/web-009-rainmorime-clone/</link>
+    <description>森雨(RainMorime)的个人网站</description>
+    <language>zh-CN</language>
+    <lastBuildDate>Sat, 15 Aug 2026 03:15:54 GMT</lastBuildDate>
+    <atom:link href="https://xiaoqianran.github.io/web-009-rainmorime-clone/rss.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>AI时代，博客会复兴吗？又何去何从？</title>
+      <link>https://xiaoqianran.github.io/web-009-rainmorime-clone/blog/ai-blog-future/</link>
+      <guid isPermaLink="true">https://xiaoqianran.github.io/web-009-rainmorime-clone/blog/ai-blog-future/</guid>
+      <pubDate>Fri, 03 Apr 2026 00:00:00 GMT</pubDate>
+      <description>博客为何没落，之后会复兴吗？这个问题早就被前辈们谈烂了，不过在这个AI发展的时代，我想说说我的看法。</description>
+    </item>
+    <item>
+      <title>【叙事杂谈】如何不让旁白越界？</title>
+      <link>https://xiaoqianran.github.io/web-009-rainmorime-clone/blog/finding/</link>
+      <guid isPermaLink="true">https://xiaoqianran.github.io/web-009-rainmorime-clone/blog/finding/</guid>
+      <pubDate>Wed, 25 Mar 2026 00:00:00 GMT</pubDate>
+      <description>角色扮演游戏中的关于旁白叙述越界的问题——从一次角色扮演经历说起，如果旁白替你表达、替你感受、替你下结论，游戏中最有重量的东西就被抽离了。</description>
+    </item>
+    <item>
+      <title>虚无-宓·威博</title>
+      <link>https://xiaoqianran.github.io/web-009-rainmorime-clone/blog/simmc3/</link>
+      <guid isPermaLink="true">https://xiaoqianran.github.io/web-009-rainmorime-clone/blog/simmc3/</guid>
+      <pubDate>Wed, 21 Jan 2026 00:00:00 GMT</pubDate>
+      <description>以意义为船，在虚无中航行</description>
+    </item>
+    <item>
+      <title>世界泡-宓·威博</title>
+      <link>https://xiaoqianran.github.io/web-009-rainmorime-clone/blog/simmc2/</link>
+      <guid isPermaLink="true">https://xiaoqianran.github.io/web-009-rainmorime-clone/blog/simmc2/</guid>
+      <pubDate>Wed, 14 Jan 2026 00:00:00 GMT</pubDate>
+      <description>SIMMC的世界泡究竟是什么？很多人调研过，也没弄明白，直到有个年轻人。</description>
+    </item>
+    <item>
+      <title>不死人-扎脱</title>
+      <link>https://xiaoqianran.github.io/web-009-rainmorime-clone/blog/simmc1/</link>
+      <guid isPermaLink="true">https://xiaoqianran.github.io/web-009-rainmorime-clone/blog/simmc1/</guid>
+      <pubDate>Sat, 10 Jan 2026 00:00:00 GMT</pubDate>
+      <description>不死人如何生活呢？</description>
+    </item>
+    <item>
+      <title>猫的真理</title>
+      <link>https://xiaoqianran.github.io/web-009-rainmorime-clone/blog/mao-de-zhenli/</link>
+      <guid isPermaLink="true">https://xiaoqianran.github.io/web-009-rainmorime-clone/blog/mao-de-zhenli/</guid>
+      <pubDate>Mon, 30 Jun 2025 00:00:00 GMT</pubDate>
+      <description>鹰角网络首届高校游戏文案创作大赛的参赛作品</description>
+    </item>
+    <item>
+      <title>记梦二</title>
+      <link>https://xiaoqianran.github.io/web-009-rainmorime-clone/blog/ji-meng-er/</link>
+      <guid isPermaLink="true">https://xiaoqianran.github.io/web-009-rainmorime-clone/blog/ji-meng-er/</guid>
+      <pubDate>Wed, 24 Jul 2024 00:00:00 GMT</pubDate>
+      <description>一只小鲨鱼，和一条大鲸鱼</description>
+    </item>
+    <item>
+      <title>记梦一</title>
+      <link>https://xiaoqianran.github.io/web-009-rainmorime-clone/blog/ji-meng-yi/</link>
+      <guid isPermaLink="true">https://xiaoqianran.github.io/web-009-rainmorime-clone/blog/ji-meng-yi/</guid>
+      <pubDate>Sun, 24 Mar 2024 00:00:00 GMT</pubDate>
+      <description>一场梦，从牵手滑下悬崖开始，途经诡异的亲戚家和黑店超市，最后在一个陌生的微信对话框里结束。</description>
+    </item>
+  </channel>
+</rss>

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://xiaoqianran.github.io/web-009-rainmorime-clone/sitemap.xml
